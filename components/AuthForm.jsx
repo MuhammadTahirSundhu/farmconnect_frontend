@@ -1,18 +1,21 @@
 // components/AuthForm.js
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 // Styled Components
 const FormWrapper = styled.div`
-  background-color: #f9fff9; /* Light greenish white */
-  border: 1px solid #d4e9d4; /* Subtle green border */
+  background-color: rgba(255, 255, 255, 255); /* Transparent white */
   border-radius: 8px;
   width: 100%;
   max-width: 400px;
   padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   margin: auto;
+  backdrop-filter: blur(8px); /* Adds a blur effect for glassmorphism */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to enhance the glass effect */
 `;
+
 
 const Title = styled.h2`
   color: #2e7d32; /* Dark green */
@@ -62,13 +65,45 @@ const SwitchLink = styled.span`
 
 // Component
 const AuthForm = () => {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
+  const [role, setRole] = useState(null);
+
+  // Extract role from the URL path
+  useEffect(() => {
+    const path = router.pathname.toLowerCase();
+    if (path.includes('farmer')) {
+      setRole('farmer');
+    } else if (path.includes('customer')) {
+      setRole('customer');
+    }
+  }, [router.pathname]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      if (role === 'farmer') {
+        router.push('/farmerdashboard');
+      } else if (role === 'customer') {
+        router.push('/customerUI');
+      } else {
+        alert('Role not identified. Please check the URL.');
+      }
+    }
+  };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
+    <div className="flex items-center justify-center h-screen bg-gray-0">
+      {/* Background */}
+      <div
+        className="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-60"
+        style={{ backgroundImage: 'url("/back1.jpg")' }}
+      ></div>
+
+      {/* Form */}
       <FormWrapper>
         <Title>{isLogin ? 'Login' : 'Sign Up'}</Title>
-        <form>
+        <form onSubmit={handleSubmit}>
           {!isLogin && <Input type="text" placeholder="Full Name" required />}
           <Input type="email" placeholder="Email" required />
           <Input type="password" placeholder="Password" required />

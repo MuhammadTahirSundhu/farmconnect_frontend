@@ -18,7 +18,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleFarmerClick = () => {
-    router.push("/farmerdashboard");
+    router.push("/farmer");
   };
 
   const handleCustomerClick = () => {
@@ -31,12 +31,12 @@ export default function Home() {
     >
       {/* Background Image with Overlay */}
       <div
-        className="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-60"
+        className="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-100"
         style={{ backgroundImage: 'url("/back1.jpg")' }} // Correct path for the image in the public folder
       ></div>
 
       {/* Darker Overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-70"></div> {/* Increased opacity for a darker overlay */}
+      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40"></div> {/* Increased opacity for a darker overlay */}
 
       {/* Main Content */}
       <main className="z-10 text-center text-white px-4 sm:px-6 lg:px-8 py-12 sm:py-24">
