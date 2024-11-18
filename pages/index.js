@@ -25,6 +25,10 @@ export default function Home() {
     router.push("/customer");
   };
 
+  const handleMillClick = () => {
+    router.push("/mill");
+  };
+
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center justify-center min-h-screen bg-green-50 text-gray-900 relative`}
@@ -44,7 +48,7 @@ export default function Home() {
           Welcome to FarmConnect
         </h1>
         <p className="text-xl text-green-100 mb-8">
-          Choose your role to proceed and connect with local farmers or customers.
+          Choose your role to proceed and connect with local farmers, customers, or mills.
         </p>
 
         <div className="flex gap-8 justify-center">
@@ -62,6 +66,14 @@ export default function Home() {
             className="px-6 py-3 text-lg bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-300 transform hover:scale-105"
           >
             Customer
+          </Button>
+
+          {/* Mill Button */}
+          <Button
+            onClick={handleMillClick}
+            className="px-6 py-3 text-lg bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-300 transform hover:scale-105"
+          >
+            Mill
           </Button>
         </div>
       </main>

@@ -1,4 +1,3 @@
-// components/AuthForm.js
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -15,7 +14,6 @@ const FormWrapper = styled.div`
   backdrop-filter: blur(8px); /* Adds a blur effect for glassmorphism */
   border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to enhance the glass effect */
 `;
-
 
 const Title = styled.h2`
   color: #2e7d32; /* Dark green */
@@ -69,6 +67,18 @@ const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState(null);
 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    location: '',
+    farmLocation: '',
+    cropTypes: '',
+    availabilityStatus: true,
+    complianceStatus: true,
+  });
+
   // Extract role from the URL path
   useEffect(() => {
     const path = router.pathname.toLowerCase();
@@ -76,16 +86,36 @@ const AuthForm = () => {
       setRole('farmer');
     } else if (path.includes('customer')) {
       setRole('customer');
+    } else if (path.includes('mill')) {
+      setRole('mill');
     }
   }, [router.pathname]);
 
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isLogin) {
+    if (!isLogin) {
+      if (formData.password !== formData.confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+      // Submit the signup data to the backend
+      console.log('Signup Data:', formData);
+    } else {
+      // Handle login navigation based on role
       if (role === 'farmer') {
         router.push('/farmerdashboard');
       } else if (role === 'customer') {
         router.push('/customerUI');
+      } else if (role === 'mill') {
+        router.push('/millUI');
       } else {
         alert('Role not identified. Please check the URL.');
       }
@@ -104,11 +134,99 @@ const AuthForm = () => {
       <FormWrapper>
         <Title>{isLogin ? 'Login' : 'Sign Up'}</Title>
         <form onSubmit={handleSubmit}>
-          {!isLogin && <Input type="text" placeholder="Full Name" required />}
-          <Input type="email" placeholder="Email" required />
-          <Input type="password" placeholder="Password" required />
           {!isLogin && (
-            <Input type="password" placeholder="Confirm Password" required />
+            <>
+              <Input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+              {role === 'farmer' && (
+                <>
+                  <Input
+                    type="text"
+                    name="farmLocation"
+                    placeholder="Farm Location"
+                    value={formData.farmLocation}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    type="text"
+                    name="cropTypes"
+                    placeholder="Crop Types (comma-separated)"
+                    value={formData.cropTypes}
+                    onChange={handleInputChange}
+                  />
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="availabilityStatus"
+                      checked={formData.availabilityStatus}
+                      onChange={handleInputChange}
+                    />
+                    Available for orders?
+                  </label>
+                </>
+              )}
+              {role === 'customer' && (
+                <Input
+                  type="text"
+                  name="location"
+                  placeholder="Location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                />
+              )}
+              {role === 'mill' && (
+                <>
+                  <Input
+                    type="text"
+                    name="location"
+                    placeholder="Mill Location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                  />
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="complianceStatus"
+                      checked={formData.complianceStatus}
+                      onChange={handleInputChange}
+                    />
+                    Compliance Status
+                  </label>
+                </>
+              )}
+            </>
+          )}
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          {!isLogin && (
+            <Input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              required
+            />
           )}
           <Button type="submit">{isLogin ? 'Login' : 'Sign Up'}</Button>
         </form>
