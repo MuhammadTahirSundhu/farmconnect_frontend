@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 // Styled Components
 const FormWrapper = styled.div`
-  background-color: rgba(255, 255, 255, 255); /* Transparent white */
+  background-color: rgba(255, 255, 255, 0.7); /* Slightly white with transparency */
   border-radius: 8px;
   width: 100%;
   max-width: 400px;
@@ -14,6 +14,7 @@ const FormWrapper = styled.div`
   backdrop-filter: blur(8px); /* Adds a blur effect for glassmorphism */
   border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to enhance the glass effect */
 `;
+
 
 const Title = styled.h2`
   color: #2e7d32; /* Dark green */
@@ -29,6 +30,7 @@ const Input = styled.input`
   border: 1px solid #cce6cc; /* Subtle greenish border */
   border-radius: 4px;
   outline: none;
+  color: #2e7d32; /* Green text */
   &:focus {
     border-color: #2e7d32; /* Focus color */
     box-shadow: 0 0 3px rgba(46, 125, 50, 0.5);
