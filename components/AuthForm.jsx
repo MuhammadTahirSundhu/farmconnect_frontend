@@ -15,7 +15,6 @@ const FormWrapper = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border to enhance the glass effect */
 `;
 
-
 const Title = styled.h2`
   color: #2e7d32; /* Dark green */
   text-align: center;
@@ -101,8 +100,9 @@ const AuthForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!isLogin) {
       if (formData.password !== formData.confirmPassword) {
         alert('Passwords do not match!');
@@ -111,15 +111,40 @@ const AuthForm = () => {
       // Submit the signup data to the backend
       console.log('Signup Data:', formData);
     } else {
-      // Handle login navigation based on role
-      if (role === 'farmer') {
-        router.push('/farmerdashboard');
-      } else if (role === 'customer') {
-        router.push('/customerUI');
-      } else if (role === 'mill') {
-        router.push('/millUI');
-      } else {
-        alert('Role not identified. Please check the URL.');
+      // Perform login with API request
+      try {
+        const response = await fetch('http://localhost:8080/api/v1/farmer/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Login failed!');
+        }
+
+        const farmerData = await response.json();
+        if (farmerData) {
+          // Successful login, redirect based on role
+          if (role === 'farmer') {
+            router.push('/farmerdashboard');
+          } else if (role === 'customer') {
+            router.push('/customerUI');
+          } else if (role === 'mill') {
+            router.push('/millUI');
+          } else {
+            alert('Role not identified. Please check the URL.');
+          }
+        } else {
+          alert('Farmer not found. Please check your credentials.');
+        }
+      } catch (error) {
+        alert('Login failed. Please try again later.');
       }
     }
   };
