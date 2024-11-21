@@ -38,7 +38,7 @@ const Header = ({ title, onAboutClick }) => {
           </button>
           <button
             className="hover:text-gray-300 transition duration-300"
-            onClick={() => router.push("/products")}
+            onClick={() => router.push("/manageProduct")}
           >
             Products
           </button>
@@ -50,7 +50,7 @@ const Header = ({ title, onAboutClick }) => {
           </button>
           <button
             className="bg-white text-green-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200"
-            onClick={() => router.push("/farmer")}
+            onClick={() => router.push("/")}
           >
             Logout
           </button>
