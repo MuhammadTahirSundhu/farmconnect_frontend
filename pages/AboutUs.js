@@ -42,8 +42,7 @@ const AboutUs = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header Component */}
-      <Header />
+      
 
       {/* Main Content */}
       <main
@@ -107,8 +106,7 @@ const AboutUs = () => {
         </div>
       </main>
 
-      {/* Footer Component */}
-      <Footer />
+     
     </div>
   );
 };
