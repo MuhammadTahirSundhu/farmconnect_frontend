@@ -29,7 +29,7 @@ const Hero = () => {
   return (
     <div>
       {/* Hero Section with Video Background */}
-      <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
+      <div style={{ position: "relative", height: "100vh", overflow: "hidden", zIndex: 1 }}>
         <video
           autoPlay
           muted
@@ -41,7 +41,7 @@ const Hero = () => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            zIndex: 0,
+            zIndex: 1,
           }}
         >
           <source src="videoplayback.mp4" type="video/mp4" />
@@ -53,7 +53,7 @@ const Hero = () => {
             width: "100%",
             padding: "3vw",
             color: "#fff",
-            zIndex: 1,
+            zIndex: 2,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -98,7 +98,7 @@ const Hero = () => {
           top: 0,
           left: 50,
           right: 50,
-          zIndex: 10,
+          zIndex: 3,
           textAlign: "center",
         }}
       >
