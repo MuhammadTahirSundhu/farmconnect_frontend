@@ -68,6 +68,7 @@ export default function FarmerLogin() {
           <button
             type="submit"
             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+            onClick={handleLogin}
           >
             Log in to Your Farm
           </button>

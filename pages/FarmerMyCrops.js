@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import localFont from "next/font/local";
 import Hero from '../components/FarmerHero';
 import Footer from '@/components/Footer';
 import ProductCard from '../components/ProductCard';
+import { getProductsByFarmerId } from '../Services/productServiceApi'; // Assuming you have a service for this
 
 // Load custom fonts
 const geistSans = localFont({
@@ -16,16 +18,20 @@ const geistMono = localFont({
 });
 
 const FarmerMyCrops = () => {
-  // Simulating product data, this will be replaced by actual data from the backend
-  const products = [
-    { id: 1, name: "Tomato", type: "Vegetable", price: 2.5 },
-    { id: 2, name: "Cucumber", type: "Vegetable", price: 1.8 },
-    { id: 3, name: "Corn", type: "Vegetable", price: 1.2 },
-    { id: 4, name: "Lettuce", type: "Vegetable", price: 1.0 },
-    { id: 5, name: "Potato", type: "Vegetable", price: 1.5 },
-    { id: 6, name: "Onion", type: "Vegetable", price: 2.0 },
-    // Add more products as needed
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await getProductsByFarmerId(1);
+        setProducts(fetchedProducts); // Store fetched products in state
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      }
+    };
+
+    fetchProducts(); // Call fetch on mount
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen relative">
@@ -44,14 +50,18 @@ const FarmerMyCrops = () => {
         <div className="container mx-auto px-4">
           {/* Product Cards Section */}
           <div className="product-cards-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-            {products.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                productName={product.name} 
-                productType={product.type} 
-                price={product.price} 
-              />
-            ))}
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard 
+                  key={product.id} 
+                  productName={product.name} 
+                  productType={product.type} 
+                  price={product.price} 
+                />
+              ))
+            ) : (
+              <p>No products available</p>
+            )}
           </div>
         </div>
       </main>
