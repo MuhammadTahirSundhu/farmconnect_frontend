@@ -63,10 +63,10 @@ export const getAllConsumers = async () => {
 // Function to handle consumer login
 export const loginConsumer = async (loginRequest) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/login`, loginRequest);
-        return response.data;
+      const response = await axios.post(`${API_BASE_URL}/login`, loginRequest);
+      return response.data;
     } catch (error) {
-        console.error("Error logging in consumer:", error);
-        throw error;
+      console.error("Error logging in consumer:", error);
+      throw error;
     }
-};
+  };

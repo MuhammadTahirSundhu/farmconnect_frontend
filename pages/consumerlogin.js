@@ -1,10 +1,12 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { loginConsumer } from "@/services/consumerServiceApi";
 
 export default function CustomerLogin() {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false);
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -12,10 +14,44 @@ export default function CustomerLogin() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
-    router.push("/customerUI");
+    setIsInvalidLogin(false);
+  
+    try {
+      const obj = {
+        email: formData.username,
+        password: formData.password,
+      };
+  
+      console.log("Sending data to API:", obj);
+  
+      const response = await loginConsumer(obj);
+        console.log("Login Response:", response);
+        if (response && response.consumerID) {
+        const { consumerID, name, location, registeredDate, email } = response;
+          router.push({
+          pathname: '/customerUI',
+          query: { consumerID, name, location, registeredDate, email },
+        });
+      } else {
+        console.error("Response does not contain expected data:", response);
+        alert("Invalid response structure received from the server.");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Invalid Credentials:", error.response.data);
+        setIsInvalidLogin(true);
+      } else {
+        console.error("Login Error:", error);
+        alert("An unexpected error occurred. Please try again later.");
+      }
+    }
+  };
+  
+
+  const closeModal = () => {
+    setIsInvalidLogin(false);
   };
 
   return (
@@ -74,6 +110,23 @@ export default function CustomerLogin() {
           </div>
         </form>
       </div>
+
+      {isInvalidLogin && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80">
+            <h3 className="text-xl font-semibold text-red-600 text-center">Invalid Login</h3>
+            <p className="text-sm text-gray-600 mt-2 text-center">
+              The username or password you entered is incorrect. Please try again.
+            </p>
+            <button
+              onClick={closeModal}
+              className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg shadow-md transition-transform duration-300 transform hover:scale-105 focus:outline-none"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
