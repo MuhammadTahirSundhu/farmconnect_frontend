@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { insertFarmer } from "@/services/farmerServiceApi"; // Adjust based on your service file
+import { insertFarmer } from "@/services/farmerServiceApi"; // Assuming insertFarmer is the API call
 
 const FarmerSignup = ({ closeForm }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [farmLocation, setFarmLocation] = useState("");
-  const [cropTypes, setCropTypes] = useState([]);
+  const [cropTypes, setCropTypes] = useState([]); // Store crop types as strings
+  const [newCrop, setNewCrop] = useState(""); // Temporary state for a new crop input
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -19,8 +20,8 @@ const FarmerSignup = ({ closeForm }) => {
       name, 
       email, 
       password, 
-      farmLocation, 
-      cropTypes 
+      farmlocation: farmLocation, 
+      croptypes: cropTypes, // Pass cropTypes as an array of strings
     };
 
     try {
@@ -40,6 +41,7 @@ const FarmerSignup = ({ closeForm }) => {
       setPassword("");
       setFarmLocation("");
       setCropTypes([]);
+      setNewCrop("");
 
       // Close form after delay
       setTimeout(() => {
@@ -52,13 +54,21 @@ const FarmerSignup = ({ closeForm }) => {
     }
   };
 
+  const handleAddCrop = () => {
+    if (newCrop.trim() !== "") {
+      // Add the crop type as a string to the array
+      setCropTypes((prev) => [...prev, newCrop.trim()]);
+      setNewCrop(""); // Clear the new crop input after adding
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
       {/* Full-Screen Blurred Background */}
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-green-500 to-yellow-600 opacity-50"></div>
 
       {/* Glassmorphic Form Container */}
-      <div className="relative flex flex-col items-center w-[400px] p-6 bg-white/60 backdrop-blur-md rounded-xl shadow-xl border border-gray-200">
+      <div className="relative flex flex-col items-center w-[400px] p-6 bg-white/60 backdrop-blur-md rounded-xl shadow-xl border border-gray-200 overflow-hidden">
         <h2 className="text-center text-3xl font-semibold text-green-700 mb-6">
           Farmer Signup
         </h2>
@@ -103,16 +113,38 @@ const FarmerSignup = ({ closeForm }) => {
               required
             />
           </div>
-          <div>
-            <input
-              type="text"
-              placeholder="Crop Types (comma separated)"
-              value={cropTypes.join(",")}
-              onChange={(e) => setCropTypes(e.target.value.split(","))}
-              className="w-full p-4 bg-white text-gray-800 rounded-lg shadow-md border focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out"
-              required
-            />
+
+          {/* Crop Types Section with Scrollable Area */}
+          <div className="space-y-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="New Crop Type"
+                value={newCrop}
+                onChange={(e) => setNewCrop(e.target.value)}
+                className="w-full p-4 bg-white text-gray-800 rounded-lg shadow-md border focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out"
+              />
+              <button
+                type="button"
+                onClick={handleAddCrop}
+                className="absolute right-4 top-4 p-2 bg-green-700 text-white rounded-full hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out"
+              >
+                +
+              </button>
+            </div>
+
+            {/* Scrollable Crops List */}
+            {cropTypes.length > 0 && (
+              <div className="max-h-[30px] overflow-y-auto border-t-2 border-gray-300 pt-2">
+                <ul className="space-y-2">
+                  {cropTypes.map((item, index) => (
+                    <li key={index} className="text-gray-600">{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
+
           <button
             type="submit"
             className="w-full p-4 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out"
@@ -128,7 +160,7 @@ const FarmerSignup = ({ closeForm }) => {
         {/* Close Button */}
         <button
           onClick={closeForm}
-          className="absolute top-2 right-2 text-white bg-red-500 hover:bg-red-600 rounded-full w-8 h-8 flex items-center justify-center focus:outline-none"
+          className="absolute top-2 right-2 text-white bg-red-500 hover:bg-red-600 rounded-full w-8 h-9 flex items-center justify-center focus:outline-none"
         >
           ×
         </button>
