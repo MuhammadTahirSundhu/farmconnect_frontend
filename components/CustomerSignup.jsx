@@ -114,7 +114,7 @@ const CustomerSignup = ({ closeForm }) => {
           onClick={closeForm}
           className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded hover:bg-red-600 focus:outline-none"
         >
-          ×
+          
         </button>
       </div>
     </div>
