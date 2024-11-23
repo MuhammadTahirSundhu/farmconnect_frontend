@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 
-import Hero from '../components/FarmerHero';
+import Hero from '../components/HeroConsumer';
 import Crops from './crops';
 import AboutUs from './AboutUs';
 import ContactUs from './contactus';

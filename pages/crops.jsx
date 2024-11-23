@@ -1,8 +1,7 @@
 import localFont from "next/font/local";
-import Hero from '../components/FarmerHero';
 import Footer from '@/components/Footer';
 import ProductCard from '../components/ProductCard';
-
+import TopBanner from"@/components/TopBannerAndNav";
 // Load custom fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,7 +36,7 @@ const FarmerMyCrops = () => {
       ></div>
 
       {/* Header */}
-      <Hero />
+      <TopBanner />
 
       {/* Main Content */}
       <main className="flex-grow py-12 z-10 relative" style={{ marginTop: "100px" }}>

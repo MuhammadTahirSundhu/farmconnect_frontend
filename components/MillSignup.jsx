@@ -18,6 +18,7 @@ const MillSignup = ({ closeForm }) => {
         throw new Error("Invalid email address.");
       }
 
+      // Success simulation
       setSuccessMessage("Mill signed up successfully!");
 
       setTimeout(() => {
@@ -29,21 +30,27 @@ const MillSignup = ({ closeForm }) => {
   };
 
   return (
-    <div className="absolute top-20 left-0 w-full h-full flex items-center justify-center">
-      {/* Glassmorphic Background */}
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+      {/* Full-Screen Blurred Background */}
       <div
         className="absolute top-0 left-0 w-full h-full bg-gray-800/40 backdrop-blur-lg"
         style={{
-          background: "linear-gradient(145deg, rgba(0,0,0,0.7), rgba(24,24,36,0.5))",
+          zIndex: 40,
         }}
       ></div>
 
       {/* Glassmorphic Form Container */}
-      <div className="relative flex flex-col items-center w-[400px] p-6 bg-gray-200/10 backdrop-blur-lg rounded-xl shadow-lg border border-gray-300/50">
+      <div
+        className="relative flex flex-col items-center w-[400px] p-6 bg-transparent backdrop-blur-lg rounded-xl shadow-lg border border-gray-300/50"
+        style={{
+          zIndex: 50,
+        }}
+      >
         <h2 className="text-center text-2xl font-semibold text-white mb-6">
           Mill Signup
         </h2>
         <form onSubmit={handleSubmit} className="w-full space-y-4">
+          {/* Name Input */}
           <div className="relative">
             <input
               type="text"
@@ -54,6 +61,8 @@ const MillSignup = ({ closeForm }) => {
               required
             />
           </div>
+
+          {/* Email Input */}
           <div className="relative">
             <input
               type="email"
@@ -64,6 +73,8 @@ const MillSignup = ({ closeForm }) => {
               required
             />
           </div>
+
+          {/* Password Input */}
           <div className="relative">
             <input
               type="password"
@@ -74,6 +85,8 @@ const MillSignup = ({ closeForm }) => {
               required
             />
           </div>
+
+          {/* Location Input */}
           <div className="relative">
             <input
               type="text"
@@ -84,6 +97,8 @@ const MillSignup = ({ closeForm }) => {
               required
             />
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -92,12 +107,13 @@ const MillSignup = ({ closeForm }) => {
           </button>
         </form>
 
+        {/* Error and Success Messages */}
         {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
         {successMessage && (
           <p className="text-green-500 mt-4">{successMessage}</p>
         )}
 
-        {/* Square Close Button */}
+        {/* Close Button */}
         <button
           onClick={closeForm}
           className="absolute top-2 right-2 bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded hover:bg-red-600 focus:outline-none"
