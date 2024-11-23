@@ -2,9 +2,9 @@ import localFont from "next/font/local";
 
 import Hero from '../components/Hero';
 import Crops from './crops';
-import AboutUs from './AboutUs';
 import ContactUsComponent from "../components/ContactUsComponent";
 import Footer from '@/components/Footer';
+import AboutUsComponent from "@/components/AboutUsComponent";
 // Load custom fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,7 +23,7 @@ const Home = () => {
     <div>
       <Hero/>
       <Crops/>
-      <AboutUs/>
+      <AboutUsComponent/>
       <ContactUsComponent/>
       <Footer/>
 

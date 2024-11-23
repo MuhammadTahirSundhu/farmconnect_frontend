@@ -1,61 +1,68 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import React from "react";
+import Link from "next/link";
 
-const Header = ({ title, onAboutClick }) => {
-  const router = useRouter();
-  const [menuOpen, setMenuOpen] = useState(false);
-
+const Header = () => {
   return (
-    <header className="w-full bg-green-700 text-white py-4 px-8 shadow-lg">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <button
-          className="sm:hidden block text-white focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 7.5h16.5M3.75 12h16.5m-16.5 4.5h16.5"
-            />
-          </svg>
-        </button>
+    <header
+      style={{
+        backgroundColor: "#48bb78",
+        padding: "1rem 2rem",
+        position: "absolute",
+        top: "3rem",
+        left: 50,
+        right: 50,
+        zIndex: 20,
+        display: "flex",
+        alignItems: "center",
+        fontFamily: "Rubik, sans-serif",
+      }}
+    >
+      {/* Left-aligned title */}
+      <h1
+        style={{
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          color: "#fff",
+          marginRight: "auto",
+        }}
+      >
+        FarmConnect
+      </h1>
 
-        <nav className="hidden sm:flex space-x-6">
-          <button
-            className="hover:text-gray-300 transition duration-300"
-            onClick={() => router.push("/farmerDashboard")}
-          >
-            Dashboard
-          </button>
-          <button
-            className="hover:text-gray-300 transition duration-300"
-            onClick={() => router.push("/manageProduct")}
-          >
-            Products
-          </button>
-          <button
-            className="hover:text-gray-300 transition duration-300"
-            onClick={onAboutClick}
-          >
-            About
-          </button>
-          <button
-            className="bg-white text-green-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200"
-            onClick={() => router.push("/")}
-          >
-            Logout
-          </button>
-        </nav>
-      </div>
+      {/* Centered Navigation */}
+      <ul
+        style={{
+          display: "flex",
+          gap: "1.5rem",
+          justifyContent: "center",
+          margin: 0,
+          listStyleType: "none",
+          flexGrow: 1,
+        }}
+      >
+        {[ 
+          { name: "Home", path: "/farmerdashboard" },
+
+          { name: "About Us", path: "/AboutUs" },
+          { name: "Contact Us", path: "/contactus" },
+          { name: "Profile", path: "/profile" },
+        ].map((link, idx) => (
+          <li key={idx}>
+            <Link
+              href={link.path}
+              style={{
+                color: "#fff",
+                textDecoration: "none",
+                fontSize: "1rem",
+                fontWeight: "500",
+                transition: "color 0.2s",
+              }}
+            >
+              {link.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </header>
   );
 };
