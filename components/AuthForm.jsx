@@ -1,10 +1,15 @@
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 // Styled Components
 const FormWrapper = styled.div`
-  background-color: rgba(255, 255, 255, 0.7); /* Slightly white with transparency */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Slightly white with transparency */
   border-radius: 8px;
   width: 100%;
   max-width: 400px;
@@ -69,13 +74,13 @@ const AuthForm = () => {
   const [role, setRole] = useState(null);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    location: '',
-    farmLocation: '',
-    cropTypes: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    location: "",
+    farmLocation: "",
+    cropTypes: "",
     availabilityStatus: true,
     complianceStatus: true,
   });
@@ -83,12 +88,12 @@ const AuthForm = () => {
   // Extract role from the URL path
   useEffect(() => {
     const path = router.pathname.toLowerCase();
-    if (path.includes('farmer')) {
-      setRole('farmer');
-    } else if (path.includes('customer')) {
-      setRole('customer');
-    } else if (path.includes('mill')) {
-      setRole('mill');
+    if (path.includes("farmer")) {
+      setRole("farmer");
+    } else if (path.includes("customer")) {
+      setRole("customer");
+    } else if (path.includes("mill")) {
+      setRole("mill");
     }
   }, [router.pathname]);
 
@@ -96,7 +101,7 @@ const AuthForm = () => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -105,46 +110,53 @@ const AuthForm = () => {
 
     if (!isLogin) {
       if (formData.password !== formData.confirmPassword) {
-        alert('Passwords do not match!');
+        alert("Passwords do not match!");
         return;
       }
       // Submit the signup data to the backend
-      console.log('Signup Data:', formData);
+      console.log("Signup Data:", formData);
     } else {
+      
       // Perform login with API request
       try {
-        const response = await fetch('http://localhost:8080/api/v1/farmer/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
+        const response = await fetch(
+          "http://localhost:8080/api/v1/consumer/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+            }),
+          }
+        );
 
         if (!response.ok) {
-          throw new Error('Login failed!');
+          console.log("Farmer Does not exsist!!");
+          ("Login failed!");
         }
 
         const farmerData = await response.json();
         if (farmerData) {
           // Successful login, redirect based on role
-          if (role === 'farmer') {
-            router.push('/farmerdashboard');
-          } else if (role === 'customer') {
-            router.push('/customerUI');
-          } else if (role === 'mill') {
-            router.push('/millUI');
+          console.log(farmerData);
+          
+          if (role === "farmer") {
+            router.push("/farmerdashboard");
+          } else if (role === "customer") {
+            // router.push("/customerUI");
+          } else if (role === "mill") {
+            router.push("/millUI");
           } else {
-            alert('Role not identified. Please check the URL.');
+            alert("Role not identified. Please check the URL.");
           }
         } else {
-          alert('Farmer not found. Please check your credentials.');
+          alert("Farmer not found. Please check your credentials.");
         }
       } catch (error) {
-        alert('Login failed. Please try again later.');
+        alert("Login failed. Please try again later.");
       }
     }
   };
@@ -159,7 +171,7 @@ const AuthForm = () => {
 
       {/* Form */}
       <FormWrapper>
-        <Title>{isLogin ? 'Login' : 'Sign Up'}</Title>
+        <Title>{isLogin ? "Login" : "Sign Up"}</Title>
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <>
@@ -171,7 +183,7 @@ const AuthForm = () => {
                 onChange={handleInputChange}
                 required
               />
-              {role === 'farmer' && (
+              {role === "farmer" && (
                 <>
                   <Input
                     type="text"
@@ -198,7 +210,7 @@ const AuthForm = () => {
                   </label>
                 </>
               )}
-              {role === 'customer' && (
+              {role === "customer" && (
                 <Input
                   type="text"
                   name="location"
@@ -207,7 +219,7 @@ const AuthForm = () => {
                   onChange={handleInputChange}
                 />
               )}
-              {role === 'mill' && (
+              {role === "mill" && (
                 <>
                   <Input
                     type="text"
@@ -255,12 +267,12 @@ const AuthForm = () => {
               required
             />
           )}
-          <Button type="submit">{isLogin ? 'Login' : 'Sign Up'}</Button>
+          <Button type="submit">{isLogin ? "Login" : "Sign Up"}</Button>
         </form>
         <SwitchLink onClick={() => setIsLogin(!isLogin)}>
           {isLogin
             ? "Don't have an account? Sign Up"
-            : 'Already have an account? Login'}
+            : "Already have an account? Login"}
         </SwitchLink>
       </FormWrapper>
     </div>

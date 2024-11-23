@@ -16,7 +16,7 @@ const AboutUs = () => {
     },
     {
       name: "Tahir Sandhu",
-      role: "Co-Founder & CTO",
+      role: "Co-Founder",
       description: "Tahir Sandhu specializes in technology and ensures seamless operations.",
       image: "/tahir.jpeg",
     },
