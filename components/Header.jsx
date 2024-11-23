@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import AboutPanel from "../components/AboutPanel";
+import FeedbackPanel from "../components/FarmerFeedbackPanel";
 
 const Header = () => {
   const [isProfileVisible, setIsProfileVisible] = useState(false);
+  const [isFeedbackVisible, setIsFeedbackVisible] = useState(false);
 
   // Sample farmer info
   const farmerInfo = {
@@ -12,12 +14,31 @@ const Header = () => {
     experience: 10,
   };
 
+  // Sample feedback data
+  const feedbackData = [
+    {
+      customerName: "John Doe",
+      rating: 5,
+      comment: "Excellent product, very fresh and high quality!"
+    },
+    {
+      customerName: "Jane Smith",
+      rating: 4,
+      comment: "Good quality, but the delivery was a bit delayed."
+    }
+  ];
+
   const handleProfileClick = () => {
     setIsProfileVisible(true);
   };
 
+  const handleFeedbackClick = () => {
+    setIsFeedbackVisible(true);  // Show feedback panel
+  };
+
   const handleClose = () => {
     setIsProfileVisible(false);
+    setIsFeedbackVisible(false);  // Close feedback panel
   };
 
   return (
@@ -57,7 +78,7 @@ const Header = () => {
             flexGrow: 1,
           }}
         >
-          {[
+          {[ 
             { name: "Home", path: "/farmerdashboard" },
             { name: "About Us", path: "/AboutUs" },
             { name: "Contact Us", path: "/contactus" },
@@ -93,6 +114,22 @@ const Header = () => {
               Profile
             </button>
           </li>
+          {/* Feedback Button */}
+          <li>
+            <button
+              onClick={handleFeedbackClick}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#fff",
+                fontSize: "1rem",
+                fontWeight: "500",
+                cursor: "pointer",
+              }}
+            >
+              Feedback
+            </button>
+          </li>
         </ul>
       </header>
 
@@ -102,6 +139,15 @@ const Header = () => {
           isVisible={isProfileVisible}
           onClose={handleClose}
           farmerInfo={farmerInfo}
+        />
+      )}
+
+      {/* FeedbackPanel */}
+      {isFeedbackVisible && (
+        <FeedbackPanel
+          isVisible={isFeedbackVisible}
+          onClose={handleClose}
+          feedbackData={feedbackData}  // Pass feedback data
         />
       )}
     </div>
