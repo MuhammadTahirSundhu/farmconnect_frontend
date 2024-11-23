@@ -3,10 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginConsumer } from "@/services/consumerServiceApi";
+import { useDispatch } from "react-redux";
+import { setCurrentConsumer } from "@/features/slice";  // Adjust path based on your slice
 
 export default function CustomerLogin() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const dispatch = useDispatch(); // Use dispatch to dispatch the action
+
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -17,23 +21,38 @@ export default function CustomerLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsInvalidLogin(false);
-  
+
     try {
       const obj = {
         email: formData.username,
         password: formData.password,
       };
-  
+
       console.log("Sending data to API:", obj);
-  
+
       const response = await loginConsumer(obj);
-        console.log("Login Response:", response);
-        if (response && response.consumerID) {
-        const { consumerID, name, location, registeredDate, email } = response;
-          router.push({
-          pathname: '/customerUI',
-          query: { consumerID, name, location, registeredDate, email },
-        });
+      console.log("Login Response:", response);
+
+      if (response && response.consumerID) {
+        const {
+          consumerID,
+          name,
+          location,
+          registeredDate,
+          email,
+        } = response;
+
+        // Dispatch the action to store the customer data in Redux store
+        dispatch(setCurrentConsumer({
+          consumerID,
+          name,
+          location,
+          registeredDate,
+          email,
+        }));
+
+        // Redirect to the customer dashboard
+        router.push("/customerUI");
       } else {
         console.error("Response does not contain expected data:", response);
         alert("Invalid response structure received from the server.");
@@ -48,7 +67,6 @@ export default function CustomerLogin() {
       }
     }
   };
-  
 
   const closeModal = () => {
     setIsInvalidLogin(false);

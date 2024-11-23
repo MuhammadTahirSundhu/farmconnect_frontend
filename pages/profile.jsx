@@ -1,6 +1,13 @@
-import React from "react";
+import { useSelector } from 'react-redux';
+import { FaUserCircle } from 'react-icons/fa';
 
 const Profile = () => {
+
+
+
+  const currentConsumer = useSelector((state) => state.currentRecords.currentConsumer); // Correct selector path
+  console.log(currentConsumer);
+
   return (
     <div className="bg-gray-100">
       {/* Navbar */}
@@ -11,7 +18,7 @@ const Profile = () => {
               href="#"
               className="text-lg font-semibold tracking-widest uppercase rounded-lg focus:outline-none"
             >
-              Example Profile
+              My Profile
             </a>
             <button className="md:hidden rounded-lg focus:outline-none">
               <svg
@@ -30,12 +37,8 @@ const Profile = () => {
           <nav className="hidden md:flex md:justify-end md:flex-row">
             <div className="relative">
               <button className="flex flex-row items-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent md:w-auto md:inline md:mt-0 md:ml-4 hover:bg-gray-200 focus:outline-none">
-                <span>Jane Doe</span>
-                <img
-                  className="inline h-6 rounded-full"
-                  src="https://avatars2.githubusercontent.com/u/24622175?s=60&amp;v=4"
-                  alt="Jane Doe"
-                />
+                <span>{currentConsumer.name}</span>
+                <FaUserCircle size={50} className="text-emerald-600 mr-4" />
               </button>
             </div>
           </nav>
@@ -58,7 +61,7 @@ const Profile = () => {
                 />
               </div>
               <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
-                Jane Doe
+                {currentConsumer.name}
               </h1>
               <h3 className="text-gray-600 font-lg text-semibold leading-6">
                 Owner at Her Company Inc.
@@ -79,7 +82,7 @@ const Profile = () => {
                 </li>
                 <li className="flex items-center py-3">
                   <span>Member since</span>
-                  <span className="ml-auto">Nov 07, 2016</span>
+                  <span className="ml-auto">{currentConsumer.registeredDate}</span>
                 </li>
               </ul>
             </div>
@@ -114,16 +117,16 @@ const Profile = () => {
                 <div className="grid md:grid-cols-2 text-sm">
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">First Name</div>
-                    <div className="px-4 py-2">Jane</div>
+                    <div className="px-4 py-2">{currentConsumer.name}</div>
                   </div>
                   <div className="grid grid-cols-2">
-                    <div className="px-4 py-2 font-semibold">Last Name</div>
-                    <div className="px-4 py-2">Doe</div>
+                    <div className="px-4 py-2 font-semibold">Location</div>
+                    <div className="px-4 py-2">{currentConsumer.location}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Email</div>
                     <div className="px-4 py-2">
-                      <a href="mailto:jane@example.com">jane@example.com</a>
+                      <a href="mailto:jane@example.com">{currentConsumer.email}</a>
                     </div>
                   </div>
                 </div>

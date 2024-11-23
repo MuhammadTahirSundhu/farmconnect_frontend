@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginConsumer } from "@/services/consumerServiceApi";
+import { useDispatch } from "react-redux";  // Importing useDispatch
+import { setCurrentConsumer } from "@/features/slice";  // Import the action to set consumer data
 
 export default function MillLogin() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const dispatch = useDispatch(); // Initialize dispatch for Redux
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -27,10 +30,22 @@ export default function MillLogin() {
       console.log("Sending data to API:", obj);
   
       const response = await loginConsumer(obj);
-        console.log("Login Response:", response);
-        if (response && response.consumerID) {
+      console.log("Login Response:", response);
+  
+      if (response && response.consumerID) {
         const { consumerID, name, location, registeredDate, email } = response;
-          router.push({
+
+        // Dispatch the action to store the consumer data in Redux store
+        dispatch(setCurrentConsumer({
+          consumerID,
+          name,
+          location,
+          registeredDate,
+          email,
+        }));
+
+        // Redirect to the consumer dashboard or UI
+        router.push({
           pathname: '/customerUI',
           query: { consumerID, name, location, registeredDate, email },
         });

@@ -22,14 +22,22 @@ const currentRecordsSlice = createSlice({
     // Set current cart record (store an object)
     setCurrentCart: (state, action) => {
       state.currentCart = action.payload;
+      console.log("I am from Redux Store ",state.currentCart);
+
     },
     // Set current consumer record
     setCurrentConsumer: (state, action) => {
       state.currentConsumer = action.payload;
+      console.log("I am from Redux Store ",state.currentConsumer);
+
     },
     // Set current farmer record
     setCurrentFarmer: (state, action) => {
       state.currentFarmer = action.payload;
+      
+
+      console.log("I am from Redux Store ",state.currentFarmer);
+      
     },
     // Set current farmer croptype record
     setCurrentFarmerCroptype: (state, action) => {
@@ -38,10 +46,14 @@ const currentRecordsSlice = createSlice({
     // Set current feedback record
     setCurrentFeedback: (state, action) => {
       state.currentFeedback = action.payload;
+      console.log("I am from Redux Store ",state.currentFeedback);
+
     },
     // Set current notification record
     setCurrentNotification: (state, action) => {
       state.currentNotification = action.payload;
+      console.log("I am from Redux Store ",state.currentNotification);
+
     },
     // Set current notification recipient record
     setCurrentNotificationRecipient: (state, action) => {
@@ -50,6 +62,8 @@ const currentRecordsSlice = createSlice({
     // Set current order record
     setCurrentOrder: (state, action) => {
       state.currentOrder = action.payload;
+      console.log("I am from Redux Store ",state.currentOrder);
+
     },
     // Set current order product record
     setCurrentOrderProduct: (state, action) => {
@@ -58,10 +72,14 @@ const currentRecordsSlice = createSlice({
     // Set current payment record
     setCurrentPayment: (state, action) => {
       state.currentPayment = action.payload;
+      console.log("I am from Redux Store ",state.currentPayment);
+
     },
     // Set current product record
     setCurrentProduct: (state, action) => {
       state.currentProduct = action.payload;
+      console.log("I am from Redux Store ",state.currentProduct);
+
     },
     // Optionally: reset the current record to null
     resetCurrentRecord: (state, action) => {

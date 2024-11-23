@@ -19,7 +19,6 @@ const geistMono = localFont({
 
 
 const Home = () => {
-  console.log("I am customerUI");
   
   return (
     <div>

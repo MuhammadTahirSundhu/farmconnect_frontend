@@ -3,10 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginFarmer } from "@/services/farmerServiceApi";
+import { useDispatch } from "react-redux";
+import { setCurrentFarmer } from "@/features/slice"; 
 
 export default function FarmerLogin() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const dispatch = useDispatch(); // Use dispatch to dispatch the action
+
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -14,6 +18,7 @@ export default function FarmerLogin() {
     setFormData({ ...formData, [name]: value });
   };
 
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsInvalidLogin(false);
@@ -40,18 +45,19 @@ export default function FarmerLogin() {
           availabilitystatus,
         } = response;
 
-        router.push({
-          pathname: "/farmerdashboard",
-          query: {
-            farmerid,
-            name,
-            farmlocation,
-            croptypes: JSON.stringify(croptypes),
-            registereddate,
-            email,
-            availabilitystatus,
-          },
-        });
+        // Dispatch the action to store the farmer data in Redux store
+        dispatch(setCurrentFarmer({
+          farmerid,
+          name,
+          farmlocation,
+          croptypes,
+          registereddate,
+          email,
+          availabilitystatus,
+        }));
+
+        // Redirect to the farmer dashboard
+        router.push("/farmerdashboard");
       } else {
         console.error("Response does not contain expected data:", response);
         alert("Invalid response structure received from the server.");
