@@ -56,7 +56,6 @@ const Nav = ({ onSignupSelect }) => {
           { name: "Crops", path: "/crops" },
           { name: "About Us", path: "/AboutUs" },
           { name: "Contact Us", path: "/contactus" },
-          { name: "Profile", path: "/profile" },
         ].map((link, idx) => (
           <li key={idx}>
             <Link
