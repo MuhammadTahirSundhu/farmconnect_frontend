@@ -30,17 +30,22 @@ const FarmerSignup = ({ closeForm }) => {
   };
 
   return (
-    <div className="absolute top-20 left-0 w-full h-full flex items-center justify-center">
-      {/* Glassmorphic Background */}
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+      {/* Full-Screen Blurred Background */}
       <div
         className="absolute top-0 left-0 w-full h-full bg-gray-800/40 backdrop-blur-lg"
         style={{
-          background: "linear-gradient(145deg, rgba(0,0,0,0.7), rgba(24,24,36,0.5))",
+          zIndex: 40,
         }}
       ></div>
 
       {/* Glassmorphic Form Container */}
-      <div className="relative flex flex-col items-center w-[400px] p-6 bg-transparent backdrop-blur-lg rounded-xl shadow-lg border border-gray-300/50">
+      <div
+        className="relative flex flex-col items-center w-[400px] p-6 bg-transparent backdrop-blur-lg rounded-xl shadow-lg border border-gray-300/50"
+        style={{
+          zIndex: 50,
+        }}
+      >
         <h2 className="text-center text-2xl font-semibold text-white mb-6">
           Farmer Signup
         </h2>
