@@ -8,19 +8,19 @@ const AboutUsComponent = () => {
   const founders = [
     {
       name: "Awais Khan",
-      role: "Co-Founder & CEO",
+      role: "",
       description: "Awais Khan is a visionary leader with a passion for innovation and growth.",
       image: "/awais.jpeg",
     },
     {
       name: "Tahir Sandhu",
-      role: "Co-Founder & CTO",
+      role: "",
       description: "Tahir Sandhu specializes in technology and ensures seamless operations.",
       image: "/tahir.jpeg",
     },
     {
       name: "Hamza Arshad",
-      role: "Co-Founder & COO",
+      role: "",
       description: "Hamza Arshad oversees day-to-day operations and strategy execution.",
       image: "/images/hamza.jpg",
     },

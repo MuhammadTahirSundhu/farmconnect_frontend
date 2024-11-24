@@ -4,6 +4,7 @@ import Hero from '../components/FarmerHero';
 import Footer from '@/components/Footer';
 import ProductCard from '../components/ProductCard';
 import { getProductsByFarmerId } from '../Services/productServiceApi'; // Assuming you have a service for this
+import {useSelector} from 'react-redux'
 
 // Load custom fonts
 const geistSans = localFont({
@@ -19,18 +20,19 @@ const geistMono = localFont({
 
 const FarmerMyCrops = () => {
   const [products, setProducts] = useState([]);
-
+  const currentFarmer = useSelector((state) => state.currentRecords.currentFarmer);
+  console.log(currentFarmer);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fetchedProducts = await getProductsByFarmerId(1);
-        setProducts(fetchedProducts); // Store fetched products in state
+        const fetchedProducts = await getProductsByFarmerId(currentFarmer.farmerid);
+        setProducts(fetchedProducts); 
       } catch (error) {
         console.error("Failed to fetch products", error);
       }
     };
 
-    fetchProducts(); // Call fetch on mount
+    fetchProducts(); 
   }, []);
 
   return (
