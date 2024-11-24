@@ -7,6 +7,7 @@ import UpdateProductForm from "../components/UpdateProductForm";
 import { useSelector } from "react-redux";
 import { getProductsByFarmerId } from "@/Services/productServiceApi";
 import { updateProduct } from "@/Services/productServiceApi"; // Adjust the import path as needed
+import { deleteProduct } from "@/Services/productServiceApi"; // Adjust the import path as needed
 
 const ManageProducts = () => {
   const currentFarmer = useSelector((state) => state.currentRecords.currentFarmer);
@@ -34,9 +35,18 @@ const ManageProducts = () => {
     setProducts((prevProducts) => [...prevProducts, product]);
   };
 
-  const handleDeleteProduct = (index) => {
-    setProducts((prevProducts) => prevProducts.filter((_, i) => i !== index));
+  const handleDeleteProduct = async (id) => {
+    console.log("Deleting product with ID:", id);  // Add this log to verify the ID
+    try {
+      await deleteProduct(id);  // Call the delete API with the correct ID
+      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+    } catch (error) {
+      alert("Error deleting product. Please try again.");
+      console.error("Error deleting product:", error);
+    }
   };
+  
+  
 
   const handleUpdateProduct = async (updatedProduct) => {
     try {

@@ -17,13 +17,20 @@ export const insertProduct = async (productModel) => {
 // Delete a product by ID
 export const deleteProduct = async (id) => {
   try {
+    console.log(`Deleting product with ID: ${id}`); // Log the ID being sent
     const response = await axios.delete(`${BASE_URL}product/${id}`);
+    console.log("Product deleted successfully:", response.data); // Log success
     return response.data;
   } catch (error) {
     console.error("Error deleting product with ID:", id, error);
+    if (error.response) {
+      // Server responded with a non-2xx status
+      console.error("Response error:", error.response.data);
+    }
     throw error;
   }
 };
+
 
 // Update a product by ID
 export const updateProduct = async (id, productModel) => {
