@@ -2,6 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const FeedbackPanel = ({ isVisible, onClose, feedbackData }) => {
+
+
+
   return (
     <motion.div
       initial={{ x: "100%" }}

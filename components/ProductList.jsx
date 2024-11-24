@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProductCard from "./ProductCard";
 
 const ProductList = ({ products, onDeleteProduct, onUpdateProduct }) => {
 
   console.log(products);
+  useEffect(() => {
+  
+  
+  }, [onDeleteProduct])
+  
   
 
   return (
@@ -17,6 +22,8 @@ const ProductList = ({ products, onDeleteProduct, onUpdateProduct }) => {
           />
           <button
             onClick={() => {
+              console.log(product);
+              
               console.log("Deleting product with ID:", product.productID); // Add log here for debugging
               onDeleteProduct(product.productID);
             }}
@@ -25,7 +32,12 @@ const ProductList = ({ products, onDeleteProduct, onUpdateProduct }) => {
             Delete
           </button>
           <button
-            onClick={() => onUpdateProduct(product)} // Open Update Form
+          
+            onClick={() =>
+              {
+                console.log(product);
+                
+                 onUpdateProduct(product)}} // Open Update Form
             className="absolute top-2 left-2 bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
           >
             Update

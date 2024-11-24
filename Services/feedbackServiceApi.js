@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Set the base URL for the API (you can adjust this as needed)
 const API_BASE_URL = 'http://localhost:8080/api/v1/feedback';
-
+// http://localhost:8080/api/v1/feedback/farmer/22
 // Insert new feedback
 export const insertFeedback = async (feedback) => {
     try {
@@ -54,6 +54,32 @@ export const getAllFeedback = async () => {
         return response.data;
     } catch (error) {
         console.error('Error fetching all feedback', error);
+        throw error;
+    }
+};
+
+// Get feedback by farmer ID
+export const getFeedbackByFarmerId = async (farmerId) => {
+    try {
+       
+        // Correct the URL to match your API format
+        const response = await axios.get(`${API_BASE_URL}/farmer/${farmerId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching feedback", error);
+        throw error;
+    }
+};
+
+// Get feedback by consumer ID
+export const getFeedbackByConsumerId = async (consumerId) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/consumer/${consumerId}`);
+        console.log(response.data);
+        
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching feedback for consumer ID: ${consumerId}`, error);
         throw error;
     }
 };
