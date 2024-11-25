@@ -7,7 +7,7 @@ const Nav = ({ onLogout }) => {
 
   const handleLogout = () => {
     if (onLogout) onLogout(); // Call logout handler (e.g., clear session)
-    router.push("/"); // Redirect to home
+    router.push("/"); // Redirect to home after logout
   };
 
   return (
@@ -28,7 +28,7 @@ const Nav = ({ onLogout }) => {
     >
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>FarmConnect</h1>
       <ul style={{ display: "flex", gap: "1rem" }}>
-        {[{ name: "Home", path: "/" }, { name: "Crops", path: "/crops" }, { name: "About Us", path: "/AboutUs" }, { name: "Contact Us", path: "/contactus" }, { name: "Profile", path: "/profile" }].map((link, idx) => (
+        {[{ name: "Home", path: "/customer" }, { name: "Crops", path: "/customer/crops" }, { name: "About Us", path: "/customer/aboutus" }, { name: "Contact Us", path: "/customer/contactus" }, { name: "Profile", path: "/customer/profile" }].map((link, idx) => (
           <li key={idx}>
             <Link
               href={link.path}
@@ -48,7 +48,7 @@ const Nav = ({ onLogout }) => {
       <ul style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         <li>
           <Link
-            href="/cart"
+            href="/customer/cart"
             style={{
               color: "#fff",
               textDecoration: "none",

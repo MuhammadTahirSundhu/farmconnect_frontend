@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
 
-import Hero from '../components/HeroConsumer';
-import Crops from './crops';
-import AboutUs from './AboutUs';
-import ContactUs from './contactus';
+import Hero from '../../components/HeroConsumer';
+import Crops from '../crops';
+import AboutUs from '../AboutUs';
+import ContactUs from '../contactus';
 import Footer from '@/components/Footer';
 // Load custom fonts
 const geistSans = localFont({
