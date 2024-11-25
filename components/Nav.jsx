@@ -5,9 +5,23 @@ import { useRouter } from "next/router";
 const Nav = ({ onSignupSelect }) => {
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const [isSignupDropdownOpen, setIsSignupDropdownOpen] = useState(false);
+  const [offerIndex, setOfferIndex] = useState(0);
   const loginDropdownRef = useRef(null);
   const signupDropdownRef = useRef(null);
   const router = useRouter();
+
+  // Rotating offers
+  const offers = [
+    "Special Offers! - Get 50% off on crops",
+    "Sale 40% off on bulk shopping!",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOfferIndex((prevIndex) => (prevIndex + 1) % offers.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Toggle login dropdown
   const toggleLoginDropdown = () => setIsLoginDropdownOpen(!isLoginDropdownOpen);
@@ -34,153 +48,175 @@ const Nav = ({ onSignupSelect }) => {
   }, []);
 
   return (
-    <nav
-      style={{
-        backgroundColor: "#48bb78",
-        padding: "1rem 2rem",
-        position: "absolute",
-        top: "3rem",
-        left: 50,
-        right: 50,
-        zIndex: 20,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        fontFamily: "Rubik, sans-serif",
-      }}
-    >
-      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>FarmConnect</h1>
-      <ul style={{ display: "flex", gap: "1rem" }}>
-        {[
-          { name: "Home", path: "/" },
-          { name: "Crops", path: "/crops" },
-          { name: "About Us", path: "/AboutUs" },
-          { name: "Contact Us", path: "/contactus" },
-        ].map((link, idx) => (
-          <li key={idx}>
-            <Link
-              href={link.path}
+    <div style={{ position: "relative", zIndex: 20 }}>
+      {/* Top Banner */}
+      <div
+        style={{
+          backgroundColor: "#1a202c",
+          padding: "0.5rem",
+          textAlign: "center",
+          fontFamily: "Rubik, sans-serif",
+          color: "#fff",
+        }}
+      >
+        {offers[offerIndex]
+          .split(/(50%|40%)/)
+          .map((text, idx) =>
+            ["50%", "40%"].includes(text) ? (
+              <span
+                key={idx}
+                style={{ color: "#48bb78", fontWeight: "bold" }}
+              >
+                {text}
+              </span>
+            ) : (
+              <span key={idx}>{text}</span>
+            )
+          )}
+      </div>
+
+      {/* Navigation Bar */}
+      <nav
+        style={{
+          backgroundColor: "#48bb78",
+          padding: "1rem 2rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          fontFamily: "Rubik, sans-serif",
+        }}
+      >
+        <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>FarmConnect</h1>
+        <ul style={{ display: "flex", gap: "1rem" }}>
+          {[
+            { name: "Home", path: "/" },
+            { name: "Crops", path: "/crops" },
+            { name: "About Us", path: "/AboutUs" },
+            { name: "Contact Us", path: "/contactus" },
+          ].map((link, idx) => (
+            <li key={idx}>
+              <Link
+                href={link.path}
+                style={{
+                  color: "#fff",
+                  textDecoration: "none",
+                  fontSize: "1rem",
+                  fontWeight: "500",
+                  transition: "color 0.2s",
+                }}
+              >
+                {link.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <ul style={{ display: "flex", gap: "1rem" }}>
+          <li ref={loginDropdownRef} style={{ position: "relative" }}>
+            <button
+              onClick={toggleLoginDropdown}
               style={{
+                background: "none",
                 color: "#fff",
-                textDecoration: "none",
                 fontSize: "1rem",
                 fontWeight: "500",
-                transition: "color 0.2s",
+                border: "none",
+                cursor: "pointer",
               }}
+              aria-expanded={isLoginDropdownOpen}
+              aria-label="Toggle login options"
             >
-              {link.name}
-            </Link>
+              Login
+            </button>
+            {isLoginDropdownOpen && (
+              <ul
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "2rem",
+                  background: "#000",
+                  color: "#fff",
+                  borderRadius: "0.5rem",
+                  padding: "0.5rem",
+                }}
+              >
+                {["Farmer", "Consumer", "Mill"].map((type) => (
+                  <li key={type}>
+                    <button
+                      onClick={() => router.push(`/${type.toLowerCase()}login`)}
+                      style={{
+                        display: "block",
+                        padding: "0.5rem 1rem",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#fff",
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                    >
+                      {type}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
-        ))}
-      </ul>
-      <ul style={{ display: "flex", gap: "1rem" }}>
-        <li ref={loginDropdownRef} style={{ position: "relative" }}>
-          <button
-            onClick={toggleLoginDropdown}
-            style={{
-              background: "none",
-              color: "#fff",
-              fontSize: "1rem",
-              fontWeight: "500",
-              border: "none",
-              cursor: "pointer",
-            }}
-            aria-expanded={isLoginDropdownOpen}
-            aria-label="Toggle login options"
-          >
-            Login
-          </button>
-          {isLoginDropdownOpen && (
-            <ul
+          <li ref={signupDropdownRef} style={{ position: "relative" }}>
+            <button
+              onClick={toggleSignupDropdown}
               style={{
-                position: "absolute",
-                right: 0,
-                top: "2rem",
-                background: "#000",
+                background: "none",
                 color: "#fff",
-                borderRadius: "0.5rem",
-                padding: "0.5rem",
-                zIndex: 50,
+                fontSize: "1rem",
+                fontWeight: "500",
+                border: "none",
+                cursor: "pointer",
               }}
+              aria-expanded={isSignupDropdownOpen}
+              aria-label="Toggle signup options"
             >
-              {["Farmer", "Consumer", "Mill"].map((type) => (
-                <li key={type}>
-                  <button
-                    onClick={() => router.push(`/${type.toLowerCase()}login`)}
-                    style={{
-                      display: "block",
-                      padding: "0.5rem 1rem",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "#fff",
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                  >
-                    {type}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-        <li ref={signupDropdownRef} style={{ position: "relative" }}>
-          <button
-            onClick={toggleSignupDropdown}
-            style={{
-              background: "none",
-              color: "#fff",
-              fontSize: "1rem",
-              fontWeight: "500",
-              border: "none",
-              cursor: "pointer",
-            }}
-            aria-expanded={isSignupDropdownOpen}
-            aria-label="Toggle signup options"
-          >
-            Signup
-          </button>
-          {isSignupDropdownOpen && (
-            <ul
-              style={{
-                position: "absolute",
-                right: 0,
-                top: "2rem",
-                background: "#000",
-                color: "#fff",
-                borderRadius: "0.5rem",
-                padding: "0.5rem",
-                zIndex: 50,
-              }}
-            >
-              {["Farmer", "Consumer", "Mill"].map((type) => (
-                <li key={type}>
-                  <button
-                    onClick={() => {
-                      onSignupSelect(type.toLowerCase());
-                      setIsSignupDropdownOpen(false); // Close the dropdown
-                    }}
-                    style={{
-                      display: "block",
-                      padding: "0.5rem 1rem",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "#fff",
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                  >
-                    {type}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      </ul>
-    </nav>
+              Signup
+            </button>
+            {isSignupDropdownOpen && (
+              <ul
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "2rem",
+                  background: "#000",
+                  color: "#fff",
+                  borderRadius: "0.5rem",
+                  padding: "0.5rem",
+                }}
+              >
+                {["Farmer", "Consumer", "Mill"].map((type) => (
+                  <li key={type}>
+                    <button
+                      onClick={() => {
+                        onSignupSelect(type.toLowerCase());
+                        setIsSignupDropdownOpen(false); // Close the dropdown
+                      }}
+                      style={{
+                        display: "block",
+                        padding: "0.5rem 1rem",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#fff",
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                    >
+                      {type}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 
