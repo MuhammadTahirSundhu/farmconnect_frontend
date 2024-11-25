@@ -80,8 +80,8 @@ const Header = () => {
         >
           {[ 
             { name: "Home", path: "/farmerdashboard" },
-            { name: "About Us", path: "/AboutUs" },
-            { name: "Contact Us", path: "/contactus" },
+            { name: "About Us", path: "/AboutUsFarmer" },
+            { name: "Contact Us", path: "/ContactUsFarmer" },
           ].map((link, idx) => (
             <li key={idx}>
               <a
