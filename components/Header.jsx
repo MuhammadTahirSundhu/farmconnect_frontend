@@ -1,49 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AboutPanel from "../components/AboutPanel";
 import FeedbackPanel from "../components/FarmerFeedbackPanel";
+import { useSelector } from "react-redux";
+import { getFeedbackByFarmerId } from "@/Services/feedbackServiceApi";
 
 const Header = () => {
   const [isProfileVisible, setIsProfileVisible] = useState(false);
   const [isFeedbackVisible, setIsFeedbackVisible] = useState(false);
+  const [feedbackData, setFeedbackData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const currentFarmer = useSelector((state) => state.currentRecords.currentFarmer);
 
-  // Sample farmer info
-  const farmerInfo = {
-    name: "John Doe",
-    location: "Springfield",
-    crops: "Tomatoes, Potatoes, Carrots",
-    experience: 10,
-  };
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      if (currentFarmer && currentFarmer.farmerid) {
+        try {
+          setLoading(true);
+          const data = await getFeedbackByFarmerId(currentFarmer.farmerid);
+          setFeedbackData(data);
+        } catch (error) {
+          console.error("Error fetching feedback data", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
 
-  // Sample feedback data
-  const feedbackData = [
-    {
-      customerName: "John Doe",
-      rating: 5,
-      comment: "Excellent product, very fresh and high quality!"
-    },
-    {
-      customerName: "Jane Smith",
-      rating: 4,
-      comment: "Good quality, but the delivery was a bit delayed."
+    if (currentFarmer?.farmerid) {
+      fetchFeedback();
     }
-  ];
 
-  const handleProfileClick = () => {
-    setIsProfileVisible(true);
-  };
+    return () => {
+      setFeedbackData([]);
+    };
+  }, [currentFarmer]);
 
-  const handleFeedbackClick = () => {
-    setIsFeedbackVisible(true);  // Show feedback panel
-  };
-
+  const handleProfileClick = () => setIsProfileVisible(true);
+  const handleFeedbackClick = () => setIsFeedbackVisible(true);
   const handleClose = () => {
     setIsProfileVisible(false);
-    setIsFeedbackVisible(false);  // Close feedback panel
+    setIsFeedbackVisible(false);
   };
 
   return (
     <div>
-      {/* Header Section */}
       <header
         style={{
           backgroundColor: "#48bb78",
@@ -80,8 +80,8 @@ const Header = () => {
         >
           {[ 
             { name: "Home", path: "/farmerdashboard" },
-            { name: "About Us", path: "/AboutUs" },
-            { name: "Contact Us", path: "/contactus" },
+            { name: "About Us", path: "/AboutUsFarmer" },
+            { name: "Contact Us", path: "/ContactUsFarmer" },
           ].map((link, idx) => (
             <li key={idx}>
               <a
@@ -98,7 +98,6 @@ const Header = () => {
               </a>
             </li>
           ))}
-          {/* Profile Button */}
           <li>
             <button
               onClick={handleProfileClick}
@@ -114,7 +113,6 @@ const Header = () => {
               Profile
             </button>
           </li>
-          {/* Feedback Button */}
           <li>
             <button
               onClick={handleFeedbackClick}
@@ -133,21 +131,20 @@ const Header = () => {
         </ul>
       </header>
 
-      {/* AboutPanel */}
       {isProfileVisible && (
         <AboutPanel
           isVisible={isProfileVisible}
           onClose={handleClose}
-          farmerInfo={farmerInfo}
+          farmerInfo={currentFarmer}
         />
       )}
 
-      {/* FeedbackPanel */}
       {isFeedbackVisible && (
         <FeedbackPanel
           isVisible={isFeedbackVisible}
           onClose={handleClose}
-          feedbackData={feedbackData}  // Pass feedback data
+          feedbackData={feedbackData}
+          loading={loading}
         />
       )}
     </div>

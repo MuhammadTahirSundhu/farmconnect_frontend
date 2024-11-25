@@ -1,22 +1,77 @@
-'use client'
+'use client';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { loginFarmer } from "@/services/farmerServiceApi";
+import { useDispatch } from "react-redux";
+import { setCurrentFarmer } from "@/features/slice"; 
 
 export default function FarmerLogin() {
-  const [formData, setFormData] = useState({ username: "", password: "" })
-  const router = useRouter()
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const dispatch = useDispatch(); // Use dispatch to dispatch the action
 
-  const handleInputChange = (e) => {  // Removed TypeScript type annotation
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+  const router = useRouter();
 
-  const handleLogin = (e) => {
-    e.preventDefault()
-    console.log("Login Data:", formData)
-    router.push("/farmerdashboard")
-  }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsInvalidLogin(false);
+
+    try {
+      const obj = {
+        email: formData.username,
+        password: formData.password,
+      };
+
+      console.log("Sending data to API:", obj);
+
+      const response = await loginFarmer(obj);
+      console.log("Login Response:", response);
+
+      if (response && response.farmerid) {
+        const {
+          farmerid,
+          name,
+          farmlocation,
+          croptypes,
+          registereddate,
+          email,
+          availabilitystatus,
+        } = response;
+
+        // Dispatch the action to store the farmer data in Redux store
+        dispatch(setCurrentFarmer({
+          farmerid,
+          name,
+          farmlocation,
+          croptypes,
+          registereddate,
+          email,
+          availabilitystatus,
+        }));
+
+        // Redirect to the farmer dashboard
+        router.push("/farmerdashboard");
+      } else {
+        console.error("Response does not contain expected data:", response);
+        alert("Invalid response structure received from the server.");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Invalid Credentials:", error.response.data);
+        setIsInvalidLogin(true);
+      } else {
+        console.error("Login Error:", error);
+        alert("An unexpected error occurred. Please try again later.");
+      }
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-amber-100 via-emerald-100 to-emerald-300">
@@ -79,5 +134,5 @@ export default function FarmerLogin() {
         </form>
       </div>
     </div>
-  )
+  );
 }

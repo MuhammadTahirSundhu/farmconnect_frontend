@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { loginConsumer } from "@/services/consumerServiceApi";
+import { useDispatch } from "react-redux";  // Importing useDispatch
+import { setCurrentConsumer } from "@/features/slice";  // Import the action to set consumer data
 
 export default function MillLogin() {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const dispatch = useDispatch(); // Initialize dispatch for Redux
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -12,10 +17,51 @@ export default function MillLogin() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
-    router.push("/millUI");
+    setIsInvalidLogin(false);
+  
+    try {
+      const obj = {
+        email: formData.username,
+        password: formData.password,
+      };
+  
+      console.log("Sending data to API:", obj);
+  
+      const response = await loginConsumer(obj);
+      console.log("Login Response:", response);
+  
+      if (response && response.consumerID) {
+        const { consumerID, name, location, registeredDate, email } = response;
+
+        // Dispatch the action to store the consumer data in Redux store
+        dispatch(setCurrentConsumer({
+          consumerID,
+          name,
+          location,
+          registeredDate,
+          email,
+        }));
+
+        // Redirect to the consumer dashboard or UI
+        router.push({
+          pathname: '/customerUI',
+          query: { consumerID, name, location, registeredDate, email },
+        });
+      } else {
+        console.error("Response does not contain expected data:", response);
+        alert("Invalid response structure received from the server.");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.error("Invalid Credentials:", error.response.data);
+        setIsInvalidLogin(true);
+      } else {
+        console.error("Login Error:", error);
+        alert("An unexpected error occurred. Please try again later.");
+      }
+    }
   };
 
   return (

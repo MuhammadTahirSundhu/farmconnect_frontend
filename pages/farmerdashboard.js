@@ -3,7 +3,6 @@ import Hero from '../components/FarmerHero';
 import ProductCard from '../components/ProductCard';
 import AboutUs from '../components/AboutUsComponent';
 import ContactUs from './contactus';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 // Load custom fonts

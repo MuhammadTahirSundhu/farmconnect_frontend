@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Cart from "./Cart";
+import { useDispatch } from "react-redux";
+import { reset } from "@/features/slice";
 
-const Nav = ({ userType, onSignupSelect, onLogout }) => {
-  const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
-  const [isSignupDropdownOpen, setIsSignupDropdownOpen] = useState(false);
-  const loginDropdownRef = useRef(null);
-  const signupDropdownRef = useRef(null);
+
+const Nav = ({ onLogout }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const toggleLoginDropdown = () => setIsLoginDropdownOpen(!isLoginDropdownOpen);
@@ -31,6 +32,7 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
 
   const handleLogout = () => {
     if (onLogout) onLogout(); // Call logout handler (e.g., clear session)
+    dispatch(reset());
     router.push("/"); // Redirect to home
   };
 
@@ -53,6 +55,9 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>FarmConnect</h1>
       <ul style={{ display: "flex", gap: "1rem" }}>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 684d7c56af9b2b10e7f3cf8ad542588df552f7b3
         {[
           { name: "Home", path: "/" },
           { name: "Crops", path: "/crops" },
@@ -60,9 +65,12 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
           { name: "Contact Us", path: "/contactus" },
           { name: "Profile", path: "/profile" },
         ].map((link, idx) => (
+<<<<<<< HEAD
 =======
         {[{ name: "Home", path: "/" }, { name: "Crops", path: "/crops" }, { name: "About Us", path: "/AboutUs" }, { name: "Contact Us", path: "/contactus" }, { name: "Profile", path: "/profile" }].map((link, idx) => (
 >>>>>>> 01512e9953ff99ead8ac5a5a42f0bfbf637af781
+=======
+>>>>>>> 684d7c56af9b2b10e7f3cf8ad542588df552f7b3
           <li key={idx}>
             <Link
               href={link.path}
@@ -230,8 +238,7 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
         )}
 =======
         <li>
-          <Link
-            href="/cart"
+          <div
             style={{
               color: "#fff",
               textDecoration: "none",
@@ -241,11 +248,15 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
               alignItems: "center",
             }}
           >
-            <span role="img" aria-label="Cart" style={{ marginRight: "0.5rem" }}>
-              🛒
+            <span
+              role="img"
+              aria-label="Cart"
+              style={{ marginRight: "0.5rem" }}
+            >
+              {/* The Cart component is now placed here within the span */}
+              <Cart cartId={1} />
             </span>
-            Cart
-          </Link>
+          </div>
         </li>
         <li>
           <button
