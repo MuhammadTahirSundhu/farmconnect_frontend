@@ -63,7 +63,7 @@ const Hero = () => {
                 fontFamily: "'MonumentExtendedUltrabold', sans-serif",
               }}
             >
-              Photography <br /> and films
+              Get Rid <br /> From interminories
             </h1>
             <h2
               style={{

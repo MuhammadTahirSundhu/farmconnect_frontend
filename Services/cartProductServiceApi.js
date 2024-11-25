@@ -59,3 +59,13 @@ export const getAllCartProducts = async () => {
         throw error;
     }
 };
+
+export const getCartProductsById = async (cartId) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/cart/${cartId}/products`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching products for cart with ID ${cartId}:`, error);
+        throw error;
+    }
+};

@@ -85,6 +85,7 @@ const currentRecordsSlice = createSlice({
     resetCurrentRecord: (state, action) => {
       state[action.payload] = null;
     },
+    reset: () => initialState,
   },
 });
 
@@ -101,6 +102,7 @@ export const {
   setCurrentPayment,
   setCurrentProduct,
   resetCurrentRecord,
+  reset
 } = currentRecordsSlice.actions;
 
 export default currentRecordsSlice.reducer;

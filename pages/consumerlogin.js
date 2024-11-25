@@ -4,13 +4,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginConsumer } from "@/services/consumerServiceApi";
 import { useDispatch } from "react-redux";
-import { setCurrentConsumer } from "@/features/slice";  // Adjust path based on your slice
+import { setCurrentConsumer, setCurrentCart } from "@/features/slice";
+import { insertCart } from "@/Services/cartServiceApi";
+import { insertCartProduct } from "@/Services/cartProductServiceApi";
+import { addProductToCart } from "@/Services/addProductToCart";
 
 export default function CustomerLogin() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
-  const dispatch = useDispatch(); // Use dispatch to dispatch the action
-
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleInputChange = (e) => {
@@ -28,10 +30,7 @@ export default function CustomerLogin() {
         password: formData.password,
       };
 
-      console.log("Sending data to API:", obj);
-
       const response = await loginConsumer(obj);
-      console.log("Login Response:", response);
 
       if (response && response.consumerID) {
         const {
@@ -42,27 +41,33 @@ export default function CustomerLogin() {
           email,
         } = response;
 
-        // Dispatch the action to store the customer data in Redux store
-        dispatch(setCurrentConsumer({
-          consumerID,
-          name,
-          location,
-          registeredDate,
-          email,
-        }));
+        dispatch(
+          setCurrentConsumer({
+            consumerID,
+            name,
+            location,
+            registeredDate,
+            email,
+          })
+        );
 
-        // Redirect to the customer dashboard
+        try {
+          const cartResponse = await insertCart({ consumerID });
+          addProductToCart(cartResponse.cartID, 1, 1);
+
+          dispatch(setCurrentCart(cartResponse));
+        } catch (cartError) {
+          alert("Failed to initialize your cart. Please contact support.");
+        }
+
         router.push("/customerUI");
       } else {
-        console.error("Response does not contain expected data:", response);
         alert("Invalid response structure received from the server.");
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        console.error("Invalid Credentials:", error.response.data);
         setIsInvalidLogin(true);
       } else {
-        console.error("Login Error:", error);
         alert("An unexpected error occurred. Please try again later.");
       }
     }

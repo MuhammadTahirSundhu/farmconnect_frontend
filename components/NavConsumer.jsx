@@ -1,12 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Cart from "./Cart";
+import { useDispatch } from "react-redux";
+import { reset } from "@/features/slice";
+
 
 const Nav = ({ onLogout }) => {
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleLogout = () => {
     if (onLogout) onLogout(); // Call logout handler (e.g., clear session)
+    dispatch(reset());
     router.push("/"); // Redirect to home
   };
 
@@ -28,7 +34,13 @@ const Nav = ({ onLogout }) => {
     >
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>FarmConnect</h1>
       <ul style={{ display: "flex", gap: "1rem" }}>
-        {[{ name: "Home", path: "/" }, { name: "Crops", path: "/crops" }, { name: "About Us", path: "/AboutUs" }, { name: "Contact Us", path: "/contactus" }, { name: "Profile", path: "/profile" }].map((link, idx) => (
+        {[
+          { name: "Home", path: "/" },
+          { name: "Crops", path: "/crops" },
+          { name: "About Us", path: "/AboutUs" },
+          { name: "Contact Us", path: "/contactus" },
+          { name: "Profile", path: "/profile" },
+        ].map((link, idx) => (
           <li key={idx}>
             <Link
               href={link.path}
@@ -47,8 +59,7 @@ const Nav = ({ onLogout }) => {
       </ul>
       <ul style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         <li>
-          <Link
-            href="/cart"
+          <div
             style={{
               color: "#fff",
               textDecoration: "none",
@@ -58,11 +69,15 @@ const Nav = ({ onLogout }) => {
               alignItems: "center",
             }}
           >
-            <span role="img" aria-label="Cart" style={{ marginRight: "0.5rem" }}>
-              🛒
+            <span
+              role="img"
+              aria-label="Cart"
+              style={{ marginRight: "0.5rem" }}
+            >
+              {/* The Cart component is now placed here within the span */}
+              <Cart cartId={1} />
             </span>
-            Cart
-          </Link>
+          </div>
         </li>
         <li>
           <button

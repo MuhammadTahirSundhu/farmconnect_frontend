@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
+import GetFeedback from '@/components/GetFeedback';
+import Cart from '@/components/Cart';
 
 const Profile = () => {
 
@@ -136,6 +138,9 @@ const Profile = () => {
           </div>
           {/* End Right Side */}
         </div>
+      </div>
+      <div>
+      <GetFeedback productOwnerId={22} />
       </div>
     </div>
   );
