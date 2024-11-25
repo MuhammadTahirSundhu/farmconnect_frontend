@@ -27,9 +27,7 @@ const Sidebar = () => {
         <Link href="/Analytics" className="flex items-center px-4 py-2 text-gray-600 hover:text-blue-500 hover:bg-gray-100 rounded-lg">
           <span>Analytics</span>
         </Link>
-        <Link href="/profile" className="flex items-center px-4 py-2 text-gray-600 hover:text-blue-500 hover:bg-gray-100 rounded-lg">
-          <span>Profile</span>
-        </Link>
+
       </nav>
 
       {/* Logout Button */}

@@ -3,8 +3,10 @@ import Header from "../components/FarmerHero";
 import Footer from "../components/Footer";
 import AddProductForm from "../components/AddProductForm";
 import ProductList from "../components/ProductList";
+import UpdateProductForm from "../components/UpdateProductForm";
 
 const ManageProducts = () => {
+<<<<<<< HEAD
   const [products, setProducts] = useState([
     {
       name: "Wireless Bluetooth Headphones",
@@ -23,6 +25,11 @@ const ManageProducts = () => {
       inStock: false,
     },
   ]);
+=======
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
+>>>>>>> 01512e9953ff99ead8ac5a5a42f0bfbf637af781
 
   const handleAddProduct = (product) => {
     setProducts([...products, product]);
@@ -30,6 +37,22 @@ const ManageProducts = () => {
 
   const handleDeleteProduct = (index) => {
     setProducts(products.filter((_, i) => i !== index));
+  };
+
+  // Handle product update
+  const handleUpdateProduct = (updatedProduct) => {
+    setProducts(
+      products.map((product) =>
+        product.name === updatedProduct.name ? updatedProduct : product
+      )
+    );
+    setIsUpdateFormVisible(false);  // Close the update form after update
+  };
+
+  // Handle opening the update form
+  const handleOpenUpdateForm = (product) => {
+    setSelectedProduct(product);
+    setIsUpdateFormVisible(true);
   };
 
   return (
@@ -44,7 +67,20 @@ const ManageProducts = () => {
           Manage Products
         </h2>
         <AddProductForm onAddProduct={handleAddProduct} />
-        <ProductList products={products} onDeleteProduct={handleDeleteProduct} />
+        <ProductList 
+          products={products} 
+          onDeleteProduct={handleDeleteProduct}
+          onUpdateProduct={handleOpenUpdateForm} // Pass the function to ProductList
+        />
+
+        {/* Conditionally render UpdateProductForm */}
+        {isUpdateFormVisible && (
+          <UpdateProductForm 
+            product={selectedProduct} 
+            onClose={() => setIsUpdateFormVisible(false)} 
+            onUpdateProduct={handleUpdateProduct}  // Pass the update function
+          />
+        )}
       </main>
       <Footer />
     </div>

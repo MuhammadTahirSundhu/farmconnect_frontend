@@ -52,6 +52,7 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
     >
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>FarmConnect</h1>
       <ul style={{ display: "flex", gap: "1rem" }}>
+<<<<<<< HEAD
         {[
           { name: "Home", path: "/" },
           { name: "Crops", path: "/crops" },
@@ -59,6 +60,9 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
           { name: "Contact Us", path: "/contactus" },
           { name: "Profile", path: "/profile" },
         ].map((link, idx) => (
+=======
+        {[{ name: "Home", path: "/" }, { name: "Crops", path: "/crops" }, { name: "About Us", path: "/AboutUs" }, { name: "Contact Us", path: "/contactus" }, { name: "Profile", path: "/profile" }].map((link, idx) => (
+>>>>>>> 01512e9953ff99ead8ac5a5a42f0bfbf637af781
           <li key={idx}>
             <Link
               href={link.path}
@@ -76,6 +80,7 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
         ))}
       </ul>
       <ul style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+<<<<<<< HEAD
         {userType === "consumer" ? (
           // Consumer-specific content
           <>
@@ -223,6 +228,41 @@ const Nav = ({ userType, onSignupSelect, onLogout }) => {
             </li>
           </>
         )}
+=======
+        <li>
+          <Link
+            href="/cart"
+            style={{
+              color: "#fff",
+              textDecoration: "none",
+              fontSize: "1rem",
+              fontWeight: "500",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <span role="img" aria-label="Cart" style={{ marginRight: "0.5rem" }}>
+              🛒
+            </span>
+            Cart
+          </Link>
+        </li>
+        <li>
+          <button
+            onClick={handleLogout}
+            style={{
+              background: "none",
+              color: "#fff",
+              fontSize: "1rem",
+              fontWeight: "500",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </button>
+        </li>
+>>>>>>> 01512e9953ff99ead8ac5a5a42f0bfbf637af781
       </ul>
     </nav>
   );

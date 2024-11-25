@@ -18,7 +18,7 @@ const AboutPanel = ({ isVisible, onClose, farmerInfo }) => {
           ✖
         </button>
       </div>
-      <div className="mt-4 space-y-4">
+      <div className="mt-4 space-y-4 text-black">
         <p>
           <span className="font-semibold">Name:</span> {farmerInfo.name}
         </p>

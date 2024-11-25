@@ -63,7 +63,7 @@ const AddProductForm = ({ onAddProduct }) => {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-2 border border-green-300 rounded"
+          className="w-full p-2 border border-green-300 rounded text-black"
           required
         />
       </div>
@@ -78,7 +78,7 @@ const AddProductForm = ({ onAddProduct }) => {
           name="type"
           value={formData.type}
           onChange={handleChange}
-          className="w-full p-2 border border-green-300 rounded"
+          className="w-full p-2 border border-green-300 rounded text-black"
           required
         />
       </div>
@@ -94,7 +94,7 @@ const AddProductForm = ({ onAddProduct }) => {
           step="0.01"
           value={formData.price}
           onChange={handleChange}
-          className="w-full p-2 border border-green-300 rounded"
+          className="w-full p-2 border border-green-300 rounded text-black"
           required
         />
       </div>
@@ -112,7 +112,7 @@ const AddProductForm = ({ onAddProduct }) => {
           name="stockQuantity"
           value={formData.stockQuantity}
           onChange={handleChange}
-          className="w-full p-2 border border-green-300 rounded"
+          className="w-full p-2 border border-green-300 rounded text-black"
           required
         />
       </div>

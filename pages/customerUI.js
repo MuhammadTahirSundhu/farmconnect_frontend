@@ -1,10 +1,37 @@
-const CustomerUI = () => {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <h1 className="text-3xl font-bold">Welcome to the Customer Dashboard!</h1>
-      </div>
-    );
-  };
-  
-  export default CustomerUI;
-  
+import localFont from "next/font/local";
+
+import Hero from '../components/HeroConsumer';
+import Crops from './crops';
+import AboutUs from './AboutUs';
+import ContactUs from './contactus';
+import Footer from '@/components/Footer';
+// Load custom fonts
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
+
+
+const Home = () => {
+  return (
+    <div>
+      <Hero/>
+      <Crops/>
+      <AboutUs/>
+      <ContactUs/>
+      <Footer/>
+
+      
+    </div>
+  );
+};
+
+export default Home;
+
+
