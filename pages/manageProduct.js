@@ -36,20 +36,20 @@ const ManageProducts = () => {
   };
 
   const handleDeleteProduct = async (id) => {
-    console.log("Deleting product with ID:", id);  // Add this log to verify the ID
     try {
-      await deleteProduct(id);  // Call the delete API with the correct ID
+      console.log(id);
+            await deleteProduct(id);
       setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
     } catch (error) {
       alert("Error deleting product. Please try again.");
       console.error("Error deleting product:", error);
     }
   };
-  
-  
 
   const handleUpdateProduct = async (updatedProduct) => {
     try {
+      console.log("My updateproduct payload is ",updatedProduct);
+      
       await updateProduct(updatedProduct.id, updatedProduct);
       const updatedProducts = await getProductsByFarmerId(currentFarmer.farmerid);
       setProducts(updatedProducts);

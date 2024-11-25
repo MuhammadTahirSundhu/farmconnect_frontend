@@ -5,6 +5,7 @@ import Crops from './crops';
 import AboutUs from './AboutUs';
 import ContactUs from './contactus';
 import Footer from '@/components/Footer';
+import CropsProduct from "@/components/CropsProduct";
 // Load custom fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,7 +24,7 @@ const Home = () => {
   return (
     <div>
       <Hero/>
-      <Crops/>
+      <CropsProduct/>
       <AboutUs/>
       <ContactUs/>
       <Footer/>
