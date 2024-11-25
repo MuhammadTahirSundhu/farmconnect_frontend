@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { insertProduct } from "@/Services/productServiceApi";
+import { useSelector } from "react-redux";
 
 const AddProductForm = ({ onAddProduct }) => {
+  const currentFarmer = useSelector((state) => state.currentRecords.currentFarmer);
+
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -8,21 +12,15 @@ const AddProductForm = ({ onAddProduct }) => {
     stockQuantity: "",
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !formData.name ||
-      !formData.type ||
-      !formData.price ||
-      !formData.stockQuantity
-    ) {
+
+    if (!formData.name || !formData.type || !formData.price || !formData.stockQuantity) {
       alert("All fields are required.");
       return;
     }
@@ -32,16 +30,30 @@ const AddProductForm = ({ onAddProduct }) => {
       return;
     }
 
-    // Send data to parent component
-    onAddProduct({ ...formData, price: parseFloat(formData.price), stockQuantity: parseInt(formData.stockQuantity, 10) });
+    const product = {
+      name: formData.name,
+      type: formData.type,
+      price: parseFloat(formData.price),
+      stockQuantity: parseInt(formData.stockQuantity, 10),
+      farmerID: parseInt(currentFarmer.farmerid),
+    };
 
-    // Reset form
-    setFormData({
-      name: "",
-      type: "",
-      price: "",
-      stockQuantity: "",
-    });
+    try {
+      const insertedProduct = await insertProduct(product);
+      onAddProduct(insertedProduct);
+
+      setFormData({
+        name: "",
+        type: "",
+        price: "",
+        stockQuantity: "",
+      });
+
+      alert("Product added successfully!");
+    } catch (error) {
+      alert("Error adding product. Please try again.");
+      console.error("Error inserting product:", error);
+    }
   };
 
   return (
@@ -100,10 +112,7 @@ const AddProductForm = ({ onAddProduct }) => {
       </div>
 
       <div className="mb-4">
-        <label
-          className="block text-green-900 font-semibold mb-2"
-          htmlFor="stockQuantity"
-        >
+        <label className="block text-green-900 font-semibold mb-2" htmlFor="stockQuantity">
           Stock Quantity
         </label>
         <input

@@ -2,6 +2,10 @@ import localFont from "next/font/local";
 import Footer from '@/components/Footer';
 import ProductCard from '../components/ProductCard';
 import TopBanner from"@/components/TopBannerAndNav";
+import {useSelector} from 'react-redux'
+import { useState,useEffect } from "react";
+import { getAllProducts } from '@/Services/productServiceApi';
+
 // Load custom fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,16 +20,31 @@ const geistMono = localFont({
 
 const FarmerMyCrops = () => {
   // Simulating product data, this will be replaced by actual data from the backend
-  const products = [
-    { id: 1, name: "Tomato", type: "Vegetable", price: 2.5 },
-    { id: 2, name: "Cucumber", type: "Vegetable", price: 1.8 },
-    { id: 3, name: "Corn", type: "Vegetable", price: 1.2 },
-    { id: 4, name: "Lettuce", type: "Vegetable", price: 1.0 },
-    { id: 5, name: "Potato", type: "Vegetable", price: 1.5 },
-    { id: 6, name: "Onion", type: "Vegetable", price: 2.0 },
-    // Add more products as needed
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsData = await getAllProducts();
+        console.log('Fetched Products:', productsData); // Log the fetched products
+        setProducts(Array.isArray(productsData) ? productsData : []); // Ensure the response is an array
+        console.log(products);
+        
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]); // Default to an empty array on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div>Loading products...</div>;
+  }
   return (
     <div className="flex flex-col min-h-screen relative">
       {/* Background Overlay */}
