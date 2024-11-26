@@ -28,6 +28,8 @@ const Hero = () => {
 
   return (
     <div>
+       {/* Navigation Bar */}
+       <Nav onSignupSelect={setSelectedSignupType} />
       {/* Hero Section with Video Background */}
       <div style={{ position: "relative", height: "100vh", overflow: "hidden", zIndex: 1 }}>
         <video
@@ -49,7 +51,7 @@ const Hero = () => {
         <div
           style={{
             position: "absolute",
-            bottom: 0,
+            bottom: 100,
             width: "100%",
             padding: "3vw",
             color: "#fff",
@@ -89,37 +91,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Top Banner with Rotating Offers */}
-      <div
-        style={{
-          backgroundColor: "#1a202c",
-          position: "absolute",
-          top: 0,
-          left: 50,
-          right: 50,
-          zIndex: 3,
-          textAlign: "center",
-        }}
-      >
-        <p style={{ color: "#fff", padding: "0.5rem 0", fontFamily: "Rubik, sans-serif" }}>
-          {offers[offerIndex]
-            .split(/(50%|40%)/)
-            .map((text, idx) =>
-              ["50%", "40%"].includes(text) ? (
-                <span key={idx} style={{ color: "#48bb78", fontWeight: "bold" }}>
-                  {text}
-                </span>
-              ) : (
-                <span key={idx}>{text}</span>
-              )
-            )}
-        </p>
-      </div>
-
-      {/* Navigation Bar */}
-      <Nav onSignupSelect={setSelectedSignupType} />
-
       {/* Signup Forms */}
       {selectedSignupType === "farmer" && <FarmerSignup closeForm={closeSignupForm} />}
       {selectedSignupType === "consumer" && <CustomerSignup closeForm={closeSignupForm} />}

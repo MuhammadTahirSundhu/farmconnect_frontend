@@ -54,7 +54,8 @@ export default function CustomerLogin() {
         try {
           const cartResponse = await insertCart({ consumerID });
           addProductToCart(cartResponse.cartID, 1, 1);
-
+          console.log(cartResponse);
+          
           dispatch(setCurrentCart(cartResponse));
         } catch (cartError) {
           alert("Failed to initialize your cart. Please contact support.");

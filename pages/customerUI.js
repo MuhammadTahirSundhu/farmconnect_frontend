@@ -2,8 +2,8 @@ import localFont from "next/font/local";
 
 import Hero from '../components/HeroConsumer';
 import Crops from './crops';
-import AboutUs from './AboutUs';
-import ContactUs from './contactus';
+import AboutUs from '../components/AboutUsComponent';
+import ContactUs from '../components/ContactUsComponent';
 import Footer from '@/components/Footer';
 import CropsProduct from "@/components/CropsProduct";
 // Load custom fonts
@@ -35,5 +35,3 @@ const Home = () => {
 };
 
 export default Home;
-
-

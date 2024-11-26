@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import dynamic from "next/dynamic";
 import { FaCreditCard, FaCalendarAlt, FaKey } from "react-icons/fa";
-
-// Dynamically load Flowbite's DatePicker script without SSR
-const FlowbiteDatePicker = dynamic(
-  () => import("flowbite").then((mod) => mod.datepicker),
-  { ssr: false }
-);
+import { useSelector, useDispatch } from "react-redux";
+import { insertPayment } from "@/Services/paymentServiceApi";
+import { createOrder } from "@/Services/orderServiceApi";
+import { setCurrentOrder, setCurrentPayment } from "@/features/slice"; // Assuming this is your action to store order data
+import { useRouter } from "next/router";
 
 function Payment() {
+  const router = useRouter();
+  const orderAmount = useSelector((state) => state.currentRecords.orderAmount); // Redux state
+  const currentConsumer = useSelector((state) => state.currentRecords.currentConsumer);
+  const dispatch = useDispatch();
+
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const [formData, setFormData] = useState({
     fullName: "",
     cardNumber: "",
@@ -16,17 +20,57 @@ function Payment() {
     cvv: "",
   });
 
+  const handlePaymentMethodChange = (method) => {
+    setPaymentMethod(method);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const placeOrder = async (orderAmount) => {
+    const payload = {
+      status: "Pending",
+      consumerID: currentConsumer.consumerID,
+      totalPrice: orderAmount,
+    };
+
+  
+
+    try {
+      console.log(payload);
+      
+      const response = await createOrder(payload);
+      dispatch(setCurrentOrder(response)); // Store order in Redux
+      return response.orderID;
+    } catch (error) {
+      console.error("Error placing order:", error);
+      throw new Error("Unable to place the order. Please try again.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      const orderId = await placeOrder(orderAmount); // Call placeOrder to create order
+      const paymentPayload = {
+        orderID: orderId,
+        amount: orderAmount + 19.0, // Including tax
+        method: paymentMethod === "card" ? "Credit Card" : "Cash on Delivery",
+        status: "Completed",
+      };
+
+      const paymentResponse = await insertPayment(paymentPayload);
+      dispatch(setCurrentPayment(paymentResponse));
+      console.log("Payment processed successfully:", paymentResponse);
+      router.push("/orderConfirmation");
+    } catch (error) {
+      console.error("Error during payment processing:", error);
+    }
   };
 
   return (
@@ -35,112 +79,119 @@ function Payment() {
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Left Section */}
           <div className="p-6 lg:p-8 bg-gray-50 dark:bg-gray-800">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              Secure Payment
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Complete your payment securely. Your information is encrypted and
-              safe.
-            </p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Choose Payment Method</h2>
+
+            <div className="flex space-x-4 mb-6">
+              <button
+                onClick={() => handlePaymentMethodChange("card")}
+                className={`py-2 px-4 rounded-lg text-sm font-medium ${
+                  paymentMethod === "card"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
+                }`}
+              >
+                Pay by Card
+              </button>
+              <button
+                onClick={() => handlePaymentMethodChange("delivery")}
+                className={`py-2 px-4 rounded-lg text-sm font-medium ${
+                  paymentMethod === "delivery"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
+                }`}
+              >
+                Pay on Delivery
+              </button>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="full_name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >
-                  Full Name*
-                </label>
-                <div className="relative">
-                  <FaCreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    id="full_name"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                    placeholder="Your Name"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="cardNumber"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                >
-                  Card Number*
-                </label>
-                <div className="relative">
-                  <FaCreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    id="cardNumber"
-                    name="cardNumber"
-                    value={formData.cardNumber}
-                    onChange={handleChange}
-                    className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                    placeholder="1234-5678-1234-5678"
-                    pattern="^[0-9]{16}$"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label
-                    htmlFor="expirationDate"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    Expiration Date*
-                  </label>
-                  <div className="relative">
-                    <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      id="expirationDate"
-                      name="expirationDate"
-                      value={formData.expirationDate}
-                      onChange={handleChange}
-                      className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                      placeholder="MM/YY"
-                      required
-                    />
+              {paymentMethod === "card" && (
+                <>
+                  <div>
+                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Full Name*
+                    </label>
+                    <div className="relative">
+                      <FaCreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                        placeholder="Your Name"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <label
-                    htmlFor="cvv"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    CVV*
-                  </label>
-                  <div className="relative">
-                    <FaKey className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      id="cvv"
-                      name="cvv"
-                      value={formData.cvv}
-                      onChange={handleChange}
-                      className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-                      placeholder="•••"
-                      pattern="^[0-9]{3,4}$"
-                      required
-                    />
+                  <div>
+                    <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Card Number*
+                    </label>
+                    <div className="relative">
+                      <FaCreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        id="cardNumber"
+                        name="cardNumber"
+                        value={formData.cardNumber}
+                        onChange={handleChange}
+                        className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                        placeholder="1234-5678-1234-5678"
+                      />
+                    </div>
                   </div>
-                </div>
-              </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="expirationDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Expiration Date*
+                      </label>
+                      <div className="relative">
+                        <FaCalendarAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="expirationDate"
+                          name="expirationDate"
+                          value={formData.expirationDate}
+                          onChange={handleChange}
+                          className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                          placeholder="MM/YY"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        CVV*
+                      </label>
+                      <div className="relative">
+                        <FaKey className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          id="cvv"
+                          name="cvv"
+                          value={formData.cvv}
+                          onChange={handleChange}
+                          className="pl-10 w-full rounded-md border border-gray-300 p-2.5 text-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                          placeholder="•••"
+                          pattern="^[0-9]{3,4}$"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <button
                 type="submit"
                 className="w-full py-3 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md text-sm font-medium transition dark:bg-indigo-500 dark:hover:bg-indigo-600"
               >
-                Pay Now
+                {paymentMethod === "card" ? "Pay Now" : "Place Order"}
               </button>
             </form>
           </div>
@@ -151,15 +202,15 @@ function Payment() {
             <ul className="space-y-4">
               <li className="flex justify-between">
                 <span>Original Price</span>
-                <span>$6,592.00</span>
+                <span>{orderAmount}</span>
               </li>
               <li className="flex justify-between">
                 <span>Tax</span>
-                <span>$599.00</span>
+                <span>$19.00</span>
               </li>
               <li className="border-t border-indigo-300 pt-4 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>$7,191.00</span>
+                <span>{orderAmount + 19.00}</span>
               </li>
             </ul>
             <p className="mt-6 text-sm">

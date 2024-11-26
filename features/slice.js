@@ -13,6 +13,8 @@ const initialState = {
   currentOrderProduct: null,
   currentPayment: null,
   currentProduct: null,
+  orderAmount: 0, // New property to store the order amount
+
 };
 
 const currentRecordsSlice = createSlice({
@@ -85,6 +87,11 @@ const currentRecordsSlice = createSlice({
     resetCurrentRecord: (state, action) => {
       state[action.payload] = null;
     },
+    // Set order amount
+    setOrderAmount: (state, action) => {
+      state.orderAmount = action.payload;
+      console.log("Order Amount updated: ", state.orderAmount);
+    },
     reset: () => initialState,
   },
 });
@@ -102,6 +109,7 @@ export const {
   setCurrentPayment,
   setCurrentProduct,
   resetCurrentRecord,
+  setOrderAmount,
   reset
 } = currentRecordsSlice.actions;
 

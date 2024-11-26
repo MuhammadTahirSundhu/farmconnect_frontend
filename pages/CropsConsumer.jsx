@@ -1,10 +1,11 @@
 import localFont from "next/font/local";
 import Footer from '@/components/Footer';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/ProductCardConsumer';
 import TopBanner from"@/components/Nav";
 import {useSelector} from 'react-redux'
 import { useState,useEffect } from "react";
 import { getAllProducts } from '@/Services/productServiceApi';
+import Nav from "@/components/NavConsumer";
 
 // Load custom fonts
 const geistSans = localFont({
@@ -55,7 +56,8 @@ const FarmerMyCrops = () => {
       ></div>
 
       {/* Header */}
-      <TopBanner />
+      {/* <TopBanner /> */}
+      <Nav/>
 
       {/* Main Content */}
       <main className="flex-grow py-12 z-10 relative" style={{ marginTop: "100px" }}>
@@ -65,6 +67,7 @@ const FarmerMyCrops = () => {
             {products.map((product) => (
               <ProductCard 
                 key={product.id} 
+                productId={product.productID}
                 productName={product.name} 
                 productType={product.type} 
                 price={product.price} 
