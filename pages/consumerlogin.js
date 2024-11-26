@@ -59,7 +59,7 @@ export default function CustomerLogin() {
         } catch (cartError) {
           alert("Failed to initialize your cart. Please contact support.");
         }
-
+        window.localStorage.setItem("userType", "consumer")
         router.push("/customerUI");
       } else {
         alert("Invalid response structure received from the server.");

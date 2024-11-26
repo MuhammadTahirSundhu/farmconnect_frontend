@@ -1,5 +1,5 @@
-import localFont from "next/font/local";
 
+import localFont from "next/font/local";
 import Hero from '../components/HeroConsumer';
 import Crops from './crops';
 import AboutUs from '../components/AboutUsComponent';

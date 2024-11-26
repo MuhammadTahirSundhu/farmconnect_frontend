@@ -90,7 +90,7 @@ const Nav = ({ onSignupSelect }) => {
         <ul style={{ display: "flex", gap: "1rem" }}>
           {[
             { name: "Home", path: "/" },
-            { name: "Crops", path: "/crops" },
+            { name: "123Crops", path: "/crops" },
             { name: "About Us", path: "/AboutUs" },
             { name: "Contact Us", path: "/contactus" },
           ].map((link, idx) => (

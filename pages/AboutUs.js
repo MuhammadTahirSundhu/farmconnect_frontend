@@ -1,16 +1,28 @@
-import React from "react";
-import TopBannerAndNav from "../components/Nav"; // Adjust path if necessary
+"use client"
+
+import React,{useState,useEffect} from "react";
+import Banner from'@/components/Nav';
+import Farmerbanner from '@/components/Header'
+import Consumerbanner from'@/components/NavConsumer';
 import AboutUsComponent from "../components/AboutUsComponent";
 import Footer from "@/components/Footer";
 
-const ContactUs = () => {
+const AboutUs = () => {
+  const [userType, setUserType] = useState("")
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUserType(window.localStorage.getItem("userType"));
+    }
+  }, []);
   return (
     <>
-      <TopBannerAndNav />
-      <AboutUsComponent />
+       {
+        userType?<Consumerbanner/>:<Banner />
+       }     
+        <AboutUsComponent />
       <Footer />
     </>
   );
 };
 
-export default ContactUs;
+export default AboutUs;

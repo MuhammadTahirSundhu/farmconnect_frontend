@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import Footer from '@/components/Footer';
 import ProductCard from '../components/ProductCardConsumer';
-import TopBanner from"@/components/Nav";
+import TopBanner from"@/components/NavConsumer";
 import {useSelector} from 'react-redux'
 import { useState,useEffect } from "react";
 import { getAllProducts } from '@/Services/productServiceApi';
