@@ -6,4 +6,8 @@ const MillUI = () => {
   );
 };
 
+<<<<<<< HEAD
 export default MillUI;
+=======
+export default MillUI;
+>>>>>>> 41447b6797d1e142436beae6587a902a76000e91

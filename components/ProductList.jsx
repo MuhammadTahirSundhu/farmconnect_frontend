@@ -13,12 +13,21 @@ const ProductList = ({ products, onDeleteProduct, onUpdateProduct }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<<<<<<< HEAD
+      {products.map((product, index) => (
+        <div key={index} className="relative">
+          <ProductCard 
+            productName={product.name}  // Updated prop
+            productType={product.type}  // Updated prop
+            price={product.price}       // Updated prop
+=======
       {products.map((product) => (
         <div key={product.id} className="relative">
           <ProductCard
             productName={product.name}
             productType={product.type}
             price={product.price}
+>>>>>>> 684d7c56af9b2b10e7f3cf8ad542588df552f7b3
           />
           <button
             onClick={() => {

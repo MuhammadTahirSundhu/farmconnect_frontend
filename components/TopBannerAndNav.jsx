@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav"; // Assuming Nav is a separate component
-import FarmerSignup from "../components/farmerSignup"; // Replace with the actual path
+import FarmerSignup from "./farmerSignup"; // Replace with the actual path
 import CustomerSignup from "../components/CustomerSignup"; // Replace with the actual path
 import MillSignup from "../components/MillSignup"; // Replace with the actual path
 

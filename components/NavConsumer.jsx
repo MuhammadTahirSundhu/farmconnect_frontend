@@ -24,6 +24,7 @@ const Nav = ({ onLogout }) => {
   }, [offers.length]);
 
   const handleLogout = () => {
+    window.localStorage.removeItem('userType')
     if (onLogout) onLogout(); // Call logout handler (e.g., clear session)
     dispatch(reset());
     router.push("/"); // Redirect to home

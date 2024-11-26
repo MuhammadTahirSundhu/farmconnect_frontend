@@ -39,6 +39,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+<<<<<<< HEAD
+/public/videoplayback.mp4
+=======
 
 #env varables
 .env.local
+>>>>>>> 01512e9953ff99ead8ac5a5a42f0bfbf637af781

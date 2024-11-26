@@ -1,11 +1,18 @@
 import localFont from "next/font/local";
 import Footer from '@/components/Footer';
 import ProductCard from '../components/ProductCardConsumer';
+<<<<<<< HEAD
 import TopBanner from"@/components/Nav";
 import {useSelector} from 'react-redux'
 import { useState,useEffect } from "react";
 import { getAllProducts } from '@/Services/productServiceApi';
 import Nav from "@/components/NavConsumer";
+=======
+import TopBanner from"@/components/NavConsumer";
+import {useSelector} from 'react-redux'
+import { useState,useEffect } from "react";
+import { getAllProducts } from '@/Services/productServiceApi';
+>>>>>>> 41447b6797d1e142436beae6587a902a76000e91
 
 // Load custom fonts
 const geistSans = localFont({
@@ -56,8 +63,12 @@ const FarmerMyCrops = () => {
       ></div>
 
       {/* Header */}
+<<<<<<< HEAD
       {/* <TopBanner /> */}
       <Nav/>
+=======
+      <TopBanner />
+>>>>>>> 41447b6797d1e142436beae6587a902a76000e91
 
       {/* Main Content */}
       <main className="flex-grow py-12 z-10 relative" style={{ marginTop: "100px" }}>
@@ -67,7 +78,10 @@ const FarmerMyCrops = () => {
             {products.map((product) => (
               <ProductCard 
                 key={product.id} 
+<<<<<<< HEAD
                 productId={product.productID}
+=======
+>>>>>>> 41447b6797d1e142436beae6587a902a76000e91
                 productName={product.name} 
                 productType={product.type} 
                 price={product.price} 
@@ -83,4 +97,8 @@ const FarmerMyCrops = () => {
   );
 };
 
+<<<<<<< HEAD
 export default FarmerMyCrops;
+=======
+export default FarmerMyCrops;
+>>>>>>> 41447b6797d1e142436beae6587a902a76000e91
