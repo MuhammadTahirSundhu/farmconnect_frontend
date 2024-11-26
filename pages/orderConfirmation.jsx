@@ -24,7 +24,7 @@ function orderConfirmation() {
             Thanks for your order!
           </h2>
           <p class="text-gray-500 dark:text-gray-400 mb-6 md:mb-8">
-            Your order{" "}
+            Your order{" #"}
             <a
               href="#"
               class="font-medium text-gray-900 dark:text-white hover:underline"

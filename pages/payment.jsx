@@ -39,6 +39,7 @@ function Payment() {
       totalPrice: orderAmount,
     };
 
+    
   
 
     try {
