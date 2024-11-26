@@ -14,6 +14,7 @@ const initialState = {
   currentPayment: null,
   currentProduct: null,
   orderAmount: 0, // New property to store the order amount
+  orderedProducts:null,
 
 };
 
@@ -92,6 +93,14 @@ const currentRecordsSlice = createSlice({
       state.orderAmount = action.payload;
       console.log("Order Amount updated: ", state.orderAmount);
     },
+    addOrderedProduct: (state, action) => {
+      const productId = action.payload;
+    
+      // Ensure the array exists before updating
+      state.orderedProducts = state.orderedProducts ? [...state.orderedProducts, productId] : [productId];
+    
+      console.log("Ordered Products updated: ", state.orderedProducts);
+    },
     reset: () => initialState,
   },
 });
@@ -110,6 +119,7 @@ export const {
   setCurrentProduct,
   resetCurrentRecord,
   setOrderAmount,
+  addOrderedProduct,
   reset
 } = currentRecordsSlice.actions;
 

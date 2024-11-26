@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
+import GetFeedback from "@/components/GetFeedback";
 import { useRouter } from "next/router";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -18,6 +19,9 @@ function orderConfirmation() {
 
   return (
     <div>
+      <div>
+      <GetFeedback productOwnerId={22} />
+      </div>
       <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
         <div class="mx-auto max-w-2xl px-4 2xl:px-0">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl mb-2">

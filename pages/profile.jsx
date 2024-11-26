@@ -140,7 +140,6 @@ const Profile = () => {
         </div>
       </div>
       <div>
-      <GetFeedback productOwnerId={22} />
       </div>
     </div>
   );

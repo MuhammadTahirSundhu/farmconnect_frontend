@@ -1,10 +1,11 @@
 import React from "react";
 import { addProductToCart } from "@/Services/addProductToCart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addOrderedProduct } from "@/features/slice";
 
 const ProductCard = ({ productId, productName, productType, price }) => {
   const currentCart = useSelector((state) => state.currentRecords.currentCart);
-
+  const dispatch = useDispatch();
   const productImage = `/${productName.toLowerCase()}.jpg`;
 
   const handleAddToCart = async () => {
@@ -16,6 +17,7 @@ const ProductCard = ({ productId, productName, productType, price }) => {
       }
 
       await addProductToCart(currentCart.cartID, productId, quantity);
+      dispatch(addOrderedProduct(productId));
     } catch (error) {
       console.error("Failed to add product to cart:", error.message);
     }
